@@ -1,0 +1,14 @@
+<?php
+class QClient extends Client
+
+{
+    public function __construct(string $apiKey)
+    {
+        parent::__construct([
+            'base_uri' => 'https://qoverflow.api.hscc.bdpa.org/v1/',
+            'headers' => [
+                'Authorization' => sprintf('bearer %s', $apiKey),
+            ]
+        ]);
+    }
+}
