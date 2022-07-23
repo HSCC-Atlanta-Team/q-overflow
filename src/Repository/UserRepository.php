@@ -35,7 +35,7 @@ class UserRepository
         }
     }
 
-    public function createUser(User $user, string $key)
+    public function createUser(User $user, string $password)
     {
         try {
             $uri = 'users';
@@ -61,6 +61,24 @@ class UserRepository
         try {
             $uri = sprintf('users/%s', $username);
             $response = $this->client->request('GET', $uri);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    public function authUser($username, $key)
+    {
+        try {
+            $uri = sprintf('users/%s/auth', $username);
+            $response = $this->client->request('POST', $uri, [
+                'json' => ['key' => $key], 
+            ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
 
