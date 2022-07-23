@@ -4,6 +4,7 @@ namespace Qoverflow\Repository;
 
 use Qoverflow\Model\User;
 use Qoverflow\Client\QClient;
+use Qoverflow\Controller\LoginController;
 
 class UserRepository
 {
@@ -35,13 +36,16 @@ class UserRepository
         }
     }
 
-    public function createUser(User $user, string $password)
+    public function createUser(User $user, string $password, string $secretKey)
     {
         try {
             $uri = 'users';
             $userData = $user->toArray();
             unset($userData['user_id']);
             unset($userData['points']);
+
+            $key = LoginController::deriveKey($user->getUsername(), $password, $secretKey);
+
             $response = $this->client->request('POST', $uri, [
                 'json' => $userData + ['key' => $key], 
             ]);

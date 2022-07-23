@@ -30,9 +30,8 @@ class LoginController
 
     }
 
-    public static function deriveKey($username, $password, $f3)
+    public static function deriveKey($username, $password, $secretKey)
     {
-        $secretKey = $f3->get('secrets.SECRET_KEY');
         $salt = md5($username.$secretKey);
 
         return hash_pbkdf2(
