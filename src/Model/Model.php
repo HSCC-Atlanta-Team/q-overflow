@@ -25,6 +25,7 @@ class Model
             if ($value === null) {
                 continue;
             }
+            
             // assemble the "get" method for this property
             $method = 'get'.str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
             // check that the "get" method exists (is callable)
@@ -33,6 +34,7 @@ class Model
                 $ret[$property] = $this->$method();
             }
         }
+ 
         return $ret;
     }
 }
