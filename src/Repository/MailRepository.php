@@ -14,7 +14,7 @@ class MailRepository
 
     }
 
-    public function mail_get($username, $after=null)
+    public function mailGet($username, $after=null)
     {
         try {
             $uri = "mail/" . $username . '?after='.$after;
@@ -29,22 +29,18 @@ class MailRepository
         }
     }
 
-    public function mail_post($mail)
+    public function createMail($mail)
     {
         try {
-            $uri = 'mail';
-            $mailData = $mail->toArray();
-            $sender = $mailData['sender'];
-            $receiver = $mailData['receiver'];
-            $subject = $mailData['subject'];
-            $text = $mailData['text'];
-
+            $data = [
+                'sender' => $mail->getSender(),
+                'receiver' => $mail->getReceiver(),
+                'subject' => $mail->getSubject(),
+                'text' => $mail->getText(),
+            ];
+            
             $response = $this->client->request('POST', $uri, [
-                'json' => "
-                'sender': '$sender',
-                'receiver': '$receiver',
-                'subject': '$subject',
-                'text': '$text'",
+                'json' => $data,
             ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
