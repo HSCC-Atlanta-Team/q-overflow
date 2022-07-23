@@ -17,7 +17,7 @@ class MailRepository
     public function mail_get($username, $after=null)
     {
         try {
-            $uri = "mail/" . $username . '?after='$after;
+            $uri = "mail/" . $username . '?after='.$after;
             $response = $this->client->request('GET', $uri);
             $data = json_decode($response->getBody()->getContents(), true);
             return $data;
