@@ -22,9 +22,12 @@ class Model
     {
         $ret = [];
         foreach (get_object_vars($this) as $property => $value) {
+            if ($value === null) {
+                continue;
+            }
+            
             // assemble the "get" method for this property
             $method = 'get'.str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
-
             // check that the "get" method exists (is callable)
             if (is_callable(array($this, $method))) {
                 // call the method to get the value
