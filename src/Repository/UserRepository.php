@@ -95,4 +95,18 @@ class UserRepository
     }
 }
 
+public function getUserQuestion($username)
+{
+    try {
+        $uri = sprintf('users/%s/questions', $username);
+        $response = $this->client->request('GET', $uri);
 
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        return $data;       
+    } catch (\Exception $e) {
+        return [
+            'error' => $e->getMessage(),
+        ];
+    }
+}
