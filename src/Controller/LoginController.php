@@ -68,4 +68,12 @@ class LoginController
 
 
     }
+    public function showSignup($f3)
+    {
+        $f3->set('template', 'templates/Signup.html');
+    }
+
+    public function doSignup($f3) {
+        
+    }
 }

@@ -7,7 +7,6 @@ use Qoverflow\Controller\LoginController;
 
 session_start();
 
-new Session();
 $f3 = \Base::instance();
 
 $f3->config('config/globals.cfg');
