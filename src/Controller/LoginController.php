@@ -22,7 +22,7 @@ class LoginController
         $key = self::deriveKey($username, $password);
         $repo = new UserRepository($f3->get('secrets.API_KEY'));
         $salt = md5($username.$secretKey);
-        $response = $repo->login($username, $salt, $key);
+        $response = $repo->login($username, $key);
 
         if ($response['success'] === true) {
             $userData = $repo->getUser($username);
