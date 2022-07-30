@@ -139,4 +139,12 @@ class Answer extends Model
 
         return $this;
     }
+
+    public function forCreateAnswer()
+    {
+        return [
+            'creator' => $this->getCreator(),
+            'text' => $this->getText(),
+        ];
+    }
 }

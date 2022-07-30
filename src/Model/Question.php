@@ -233,4 +233,12 @@ class Question extends Model
 
         return $this;
     }
+    public function forCreateQuestion() {
+        return [
+            'creator' => $this->getCreator(),
+            'title' => $this->getTitle(),
+            'text' => $this->getText(),
+        ];
+    }
+
 }
