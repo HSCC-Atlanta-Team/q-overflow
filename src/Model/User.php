@@ -101,4 +101,13 @@ class User extends Model
 
         return $this;
     }
+
+    public function getGravatar()
+    {
+        $hashedEmail = md5(trim(strtolower($this->getEmail())));
+        $request = "https://www.gravatar.com/avatar/".$hashedEmail;
+
+        return $request;
+    }
+
 }
