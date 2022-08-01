@@ -62,6 +62,43 @@ class LoginController
 
     }
 
+    public function doForgot($f3)
+    {
+        $username = $f3->get('REQUEST.username_forgot');
+        $link = sprintf(
+            '%s/reset?id=%s',
+            $f3->get('BASEURL'),
+            base64_encode($username)
+        );
+        $f3->set('link', $link);
+        $f3->set('template', 'templates/forgot_success.html');
+
+    }
+
+    public function showReset($f3)
+    {
+        $f3->set('template', 'templates/reset.html');
+        $f3->set('id', $f3->get('REQUEST.id'));
+
+
+    }
+
+    public function doReset($f3)
+    {
+        $password1 = $f3->get('REQUEST.password1');
+        $password2 = $f3->get('REQUEST.password2');
+        $id = $f3->get('REQUEST.id');
+        if ($password1 !== $password2) {
+            $f3->reroute($f3->get('BASEURL').'/reset');
+
+
+        }
+        $userRepo = new UserRepository($f3);
+        $username = base64_decode($id);
+        $userRepo->changePassword($username, $password1);
+
+    }
+
     public function afterroute($f3)
     {
         echo \Template::instance()->render('templates/main.html');
@@ -73,7 +110,28 @@ class LoginController
         $f3->set('template', 'templates/Signup.html');
     }
 
-    public function doSignup($f3) {
-        
+    public function doSignup($f3) 
+    {
+        $userRepo = new UserRepository($f3);
+
+        $username = $f3->get('REQUEST.username_signup');
+        $email = $f3->get('REQUEST.email_signup');
+        $password = $f3->get('REQUEST.pwd_signup');
+
+        $salt = md5($username.$f3->get('secrets.SECRET_KEY'));
+
+        $user = new User([
+            'username' => $username,
+            'email' => $email,
+            'salt' => $salt,
+        ]);
+
+        $newUser = $userRepo->createUsers($user, $password, $f3->get('secrets.SECRET_KEY'));
+
+        if ($newUser['success'] === true) {
+            $user = new User($newUser['user']);
+            $f3->set('SESSION.user', $user);
+        }
+
     }
 }
