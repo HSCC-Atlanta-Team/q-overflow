@@ -8,10 +8,10 @@ use Qoverflow\Client\QClient;
 use Qoverflow\Model\Question;
 use Qoverflow\Controller\LoginController;
 
-class QuestionRepository
+class QuestionRepository extends Repository
 {
-    private $client;
-    private $f3;
+    protected $client;
+    protected $f3;
 
     public function __construct($f3, QClient $client = null)
     {
