@@ -8,7 +8,7 @@ use Qoverflow\Client\QClient;
 use Qoverflow\Model\Question;
 use Qoverflow\Controller\LoginController;
 
-class QuestionRepository
+class QuestionRepository extends Repository
 {
     private $client;
     private $f3;

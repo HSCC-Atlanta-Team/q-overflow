@@ -1,5 +1,5 @@
 <?php
-class MailRepository
+class MailRepository extends Repository
 {
     private $client;
 

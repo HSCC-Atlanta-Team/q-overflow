@@ -1,14 +1,23 @@
 <?php
-class QClient extends Client
 
+namespace Qoverflow\Repository;
+
+use GuzzleHttp\Client;
+use Qoverflow\Client\QClient;
+
+class Repository
 {
-    public function __construct(string $apiKey)
+    protected $f3;
+    protected $client;
+
+    public function __construct(?Client $client = null)
     {
-        parent::__construct([
-            'base_uri' => 'https://qoverflow.api.hscc.bdpa.org/v1/',
-            'headers' => [
-                'Authorization' => sprintf('bearer %s', $apiKey),
-            ]
-        ]);
+        $this->f3 = \Base::instance();
+
+        if ($client) {
+            $this->client = $client;
+        } else {
+            $this->client = new QClient($this->f3->get('secrets.API_KEY'));
+        }
     }
 }
