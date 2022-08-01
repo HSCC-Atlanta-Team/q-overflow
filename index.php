@@ -8,7 +8,9 @@ use Qoverflow\Controller\LoginController;
 session_start();
 
 $f3 = \Base::instance();
+$f3->()
 
+dd('test');
 $f3->config('config/globals.cfg');
 $f3->config('config/routes.cfg');
 $f3->config('config/secrets.cfg');
