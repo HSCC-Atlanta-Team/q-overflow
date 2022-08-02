@@ -1,14 +1,41 @@
 
     <div class="container">
-        <div class="row">
-          <div class="col">
-            Profile
-          </div>
-          <div class="col">
-            Questions
-          </div>
-          <div class="col">
-            Answers
-          </div>
+      <div class="row">
+        <div class="col">
+          <img src="{{ @SESSION.user->getGravatar(128) }}" />
+          <div class="h3 username">{{ @SESSION.user->getUsername() }}</div>
+          <div class="h4">Email: {{ @SESSION.user->getEmail() }}</div>
+          <div class="h4 points">Points: {{ @SESSION.user->getPoints() }}</div>
+        </div>
+        <div class="col">
+          <h3>My Questions</h3>
+          <check if="{{ count(@questions) }}">
+            
+            <true>
+              <repeat group="{{ @questions }}" value="{{ @question }}" counter="{{ @idx }}">
+                <include href="templates/question.html" />
+              </repeat>
+            </true>
+            <false>
+              You have no questions yet. <a href="/new-question">Add a Question</a>
+            </false>
+          </check>
+          
+        </div>
+        <div class="col">
+          <h3>My Answers</h3>
+          <check if="{{ @answers }}">
+            <true>
+              <repeat group="{{ @answers }}" value="{{ @answer }}" counter="{{ @idx }}">
+                <include href="templates/answer.html" />
+              </repeat>
+            </true>
+            <false>
+              You have no answers yet. <a href="/questions">Answer a Question</a>
+            </false>
+
+
+          </check>
         </div>
       </div>
+    </div>
