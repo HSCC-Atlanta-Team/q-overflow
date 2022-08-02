@@ -1,15 +1,20 @@
-<div class="card col-lg-3 top-50 start-50 translate-middle shadow" style="height: 33rem;">
+<div class="card col-lg-3 top-50 start-50 translate-middle shadow" style="height: 35rem;">
   <form action="{{ @BASEURL }}/login" method="post">
     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login</p>
 
     <div class="form-outline mb-4 col-xs-4 px-3">
       <input type="text" name="username" id="username_login" class="form-control" />
-      <label class="form-label" for="username_login" placeholder="Username">Username</label>
+      <label class="form-label" for="username" placeholder="Username">Username</label>
+    </div>
+
+    <div class="form-outline mb-4 col-xs-4 px-3">
+      <input type="email" name="email" id="email_login" class="form-control" />
+      <label class="form-label" for="email" placeholder="Email">Email</label>
     </div>
 
     <div class="form-outline mb-4 col-xs-4 px-3">
       <input type="password" name="password" id="pwd_login" class="form-control" />
-      <label class="form-label" for="pwd_login" placeholder="Password">Password</label>
+      <label class="form-label" for="password" placeholder="Password">Password</label>
     </div>
 
     <div class="row mb-4 px-3 rounded-3">
