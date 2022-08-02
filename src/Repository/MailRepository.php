@@ -1,7 +1,7 @@
 <?php
-class MailRepository
+class MailRepository extends Repository
 {
-    private $client;
+    protected $client;
 
     public function __construct(string $apiKey, QClient $client = null)
     {

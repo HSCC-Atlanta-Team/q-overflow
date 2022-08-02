@@ -2,6 +2,10 @@
 
 namespace Qoverflow\Controller;
 
+use Qoverflow\Model\User;
+use Qoverflow\Repository\UserRepository;
+use SebastianBergmann\Template\Template;
+
 class LoginController 
 {
     public function index($f3)
@@ -18,11 +22,14 @@ class LoginController
     public function doLogin($f3) 
     {
         $username = $f3->get('REQUEST.username');
+        $email = $f3->get('REQUEST.email');
         $password = $f3->get('REQUEST.password');
-        $key = self::deriveKey($username, $password);
-        $repo = new UserRepository($f3->get('secrets.API_KEY'));
-        $salt = md5($username.$secretKey);
-        $response = $repo->login($username, $key);
+        $repo = new UserRepository($f3);
+        $user = new User([
+            'username' => $username,
+            'email' => $email,
+        ]);
+        $response = $repo->authUser($user, $password);
 
         if ($response['success'] === true) {
             $userData = $repo->getUser($username);
@@ -33,19 +40,6 @@ class LoginController
             $f3->reroute($f3->get('BASEURL').'/login');
         }
 
-    }
-
-    public static function deriveKey($username, $password, $secretKey)
-    {
-        $salt = md5($username.$secretKey);
-
-        return hash_pbkdf2(
-            'sha256',
-            $password,
-            $salt,
-            100000,
-            128
-        );
     }
 
 
@@ -62,6 +56,47 @@ class LoginController
 
     }
 
+    public function doForgot($f3)
+    {
+        $username = $f3->get('REQUEST.username_forgot');
+        $link = sprintf(
+            '%s/reset?id=%s',
+            $f3->get('BASEURL'),
+            base64_encode($username)
+        );
+        $f3->set('link', $link);
+        $f3->set('template', 'templates/forgot_success.html');
+
+    }
+
+    public function showReset($f3)
+    {
+        $f3->set('template', 'templates/reset.html');
+        $f3->set('id', $f3->get('REQUEST.id'));
+
+
+    }
+
+    public function doReset($f3)
+    {
+        $password1 = $f3->get('REQUEST.password1');
+        $password2 = $f3->get('REQUEST.password2');
+        $id = $f3->get('REQUEST.id');
+        if ($password1 !== $password2) {
+            $f3->reroute($f3->get('BASEURL').'/reset');
+
+
+        }
+        $userRepo = new UserRepository($f3);
+        $username = base64_decode($id);
+        $result = $userRepo->changePassword($username, $password1);
+        if ($result['success'] == true) {
+            $f3->reroute($f3->get('BASEURL').'/login');
+        }
+        
+
+    }
+
     public function afterroute($f3)
     {
         echo \Template::instance()->render('templates/main.html');
@@ -73,7 +108,29 @@ class LoginController
         $f3->set('template', 'templates/Signup.html');
     }
 
-    public function doSignup($f3) {
-        
+    public function doSignup($f3) 
+    {
+        $userRepo = new UserRepository($f3);
+
+        $username = $f3->get('REQUEST.username_signup');
+        $email = $f3->get('REQUEST.email_signup');
+        $password = $f3->get('REQUEST.pwd_signup');
+
+        $user = new User([
+            'username' => $username,
+            'email' => $email, 
+        ]);
+        $newUser = $userRepo->createUser($user->forCreateUser($password));
+
+        if ($newUser['success'] === true) {
+            $user = new User($newUser['user']);
+            $f3->set('SESSION.user', $user);
+
+            $f3->reroute($f3->get('BASEURL').'/dashboard');
+   
+        }
+
+        $f3->reroute($f3->get('BASEURL').'/signup');
+    
     }
 }

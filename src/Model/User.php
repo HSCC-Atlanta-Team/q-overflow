@@ -35,7 +35,7 @@ class User extends Model
      */
     public function getSalt()
     {
-        return $this->salt;
+        return md5($this->getUsername().$this->f3->get('secrets.SECRET_KEY'));
     }
 
     /**
@@ -100,5 +100,34 @@ class User extends Model
         $this->points = $points;
 
         return $this;
+    }
+
+    public function getGravatar($size = 32)
+    {
+        $hashedEmail = md5(trim(strtolower($this->getEmail())));
+        $request = "https://www.gravatar.com/avatar/".$hashedEmail."?s=$size";
+
+        return $request;
+    }
+
+    public function getKey($password)
+    {
+        return hash_pbkdf2(
+            'sha256',
+            $password,
+            $this->getSalt(),
+            100000,
+            128
+        );
+    }
+
+    public function forCreateUser($password)
+    {
+        return [
+            'username' => $this->getUsername(),
+            'email' => $this->getEmail(),
+            'salt' => $this->getSalt(),
+            'key' => $this->getKey($password),
+        ];
     }
 }

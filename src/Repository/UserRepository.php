@@ -6,10 +6,10 @@ use Qoverflow\Model\User;
 use Qoverflow\Client\QClient;
 use Qoverflow\Controller\LoginController;
 
-class UserRepository
+class UserRepository extends Repository
 {
-    private $client;
-    private $f3;
+    protected $client;
+    protected $f3;
 
     public function __construct($f3, QClient $client = null)
     {
@@ -38,18 +38,13 @@ class UserRepository
         }
     }
 
-    public function createUser(User $user, string $password, string $secretKey)
+    public function createUser(User $user, string $password)
     {
         try {
             $uri = 'users';
-            $userData = $user->toArray();
-            unset($userData['user_id']);
-            unset($userData['points']);
-
-            $key = LoginController::deriveKey($user->getUsername(), $password, $secretKey);
-
+            
             $response = $this->client->request('POST', $uri, [
-                'json' => $userData + ['key' => $key], 
+                'json' => $user->forCreateUser($password),
             ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
@@ -78,12 +73,15 @@ class UserRepository
         }
     }
 
-    public function authUser($username, $key)
+    public function authUser(User $user, $password)
     {
         try {
-            $uri = sprintf('users/%s/auth', $username);
+            $uri = sprintf('users/%s/auth', $user->getUsername());
+
             $response = $this->client->request('POST', $uri, [
-                'json' => ['key' => $key], 
+                'json' => [
+                    'key' => $user->getKey($password),
+                ],
             ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
