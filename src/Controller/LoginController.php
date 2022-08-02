@@ -2,6 +2,10 @@
 
 namespace Qoverflow\Controller;
 
+use Qoverflow\Model\User;
+use Qoverflow\Repository\UserRepository;
+use SebastianBergmann\Template\Template;
+
 class LoginController 
 {
     public function index($f3)
