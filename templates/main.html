@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +10,28 @@
     <script src="assets/jquery/jquery-3.6.0.min.js"></script>
     <script src="assets/bootstrap-5.1.3-dist/js/bootstrap.js"></script>
 </head>
+
 <body>
-    <include href="{{ @template }}" />
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <include href="templates/nav.html" />
+            </div>
+        </div>
+
+        <div class="row pt-5 pb-5">
+            <div class="col-12">
+                <include href="{{ @template }}" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <include href="templates/footer.html" />
+            </div>
+        </div>
+    </div>
+
 </body>
+
 </html>
