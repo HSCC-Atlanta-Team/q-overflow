@@ -119,4 +119,12 @@ class Comment extends Model
 
         return $this;
     }
+
+    public function forCreateComment()
+    {
+        return [
+            'creator' => $this->getCreator(),
+            'text' => $this->getText(),
+        ];
+    }
 }

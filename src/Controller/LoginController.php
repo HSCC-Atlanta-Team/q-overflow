@@ -23,10 +23,11 @@ class LoginController
     {
         $username = $f3->get('REQUEST.username');
         $password = $f3->get('REQUEST.password');
-        $key = self::deriveKey($username, $password);
-        $repo = new UserRepository($f3->get('secrets.API_KEY'));
-        $salt = md5($username.$secretKey);
-        $response = $repo->login($username, $key);
+        $repo = new UserRepository();
+        $user = new User([
+            'username' => $username,
+        ]);
+        $response = $repo->authUser($username, $password);
 
         if ($response['success'] === true) {
             $userData = $repo->getUser($username);
@@ -37,19 +38,6 @@ class LoginController
             $f3->reroute($f3->get('BASEURL').'/login');
         }
 
-    }
-
-    public static function deriveKey($username, $password, $secretKey)
-    {
-        $salt = md5($username.$secretKey);
-
-        return hash_pbkdf2(
-            'sha256',
-            $password,
-            $salt,
-            100000,
-            128
-        );
     }
 
 
@@ -126,20 +114,21 @@ class LoginController
         $email = $f3->get('REQUEST.email_signup');
         $password = $f3->get('REQUEST.pwd_signup');
 
-        $salt = md5($username.$f3->get('secrets.SECRET_KEY'));
-
         $user = new User([
             'username' => $username,
-            'email' => $email,
-            'salt' => $salt,
+            'email' => $email, 
         ]);
-
-        $newUser = $userRepo->createUsers($user, $password, $f3->get('secrets.SECRET_KEY'));
+        $newUser = $userRepo->createUser($user->forCreateUser($password));
 
         if ($newUser['success'] === true) {
             $user = new User($newUser['user']);
             $f3->set('SESSION.user', $user);
+
+            $f3->reroute($f3->get('BASEURL').'/dashboard');
+   
         }
 
+        $f3->reroute($f3->get('BASEURL').'/signup');
+    
     }
 }

@@ -4,8 +4,11 @@ namespace Qoverflow\Model;
 
 class Model
 {
+    protected $f3;
+
     public function __construct(array $data = [])
     {
+        $this->f3 = \Base::instance();
         foreach ($data as $property => $value) {
             // assemble the "set" method for this property
             $method = 'set'.str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
