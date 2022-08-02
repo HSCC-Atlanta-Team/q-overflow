@@ -2,7 +2,7 @@
 
 namespace Qoverflow\Controller;
 
-class DashboardController 
+class DashboardController extends BaseController
 {
     public function index ($f3)
     {
