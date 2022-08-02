@@ -22,12 +22,14 @@ class LoginController
     public function doLogin($f3) 
     {
         $username = $f3->get('REQUEST.username');
+        $email = $f3->get('REQUEST.email');
         $password = $f3->get('REQUEST.password');
-        $repo = new UserRepository();
+        $repo = new UserRepository($f3);
         $user = new User([
             'username' => $username,
+            'email' => $email,
         ]);
-        $response = $repo->authUser($username, $password);
+        $response = $repo->authUser($user, $password);
 
         if ($response['success'] === true) {
             $userData = $repo->getUser($username);
