@@ -26,9 +26,8 @@
         </form>
         -->
         <div class="float-right">
-          <a href="{{ @BASEURL }}"><img src="https://www.gravatar.com/avatar/"></a>
-          <span id="user_level">Level:  </span>
-          <span id="user_points">Points:  </span>
+          <a href="{{ @BASEURL }}"><img src="{{@SESSION.user->getGravatar(64)}}"></a>
+          <span id="user_points">Points:  {{@SESSION.user->getPoints()}}</span>
         </div>
       </div>
     </div>
