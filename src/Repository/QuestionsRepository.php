@@ -85,5 +85,125 @@ class QuestionRepository extends Repository
             ];
         }   
     }
-    
+
+    public function getQuestion($question_id)
+    {
+        try {
+            $uri = sprintf('questions/%s', $question_id);
+            $response = $this->client->request('GET', $uri);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+    public function updateVote($username, $question_id, $inc = true, $upvote = true)
+    {
+        $operation = ($inc) ? 'increment' : 'decrement';
+        $target = ($upvote) ? 'upvotes' : 'downvotes';
+        try {
+            $uri = sprintf('questions/%s/vote/%s', $question_id, $username);
+            $options = [
+                'operation' => $operation,
+                'target' => $target,
+            ];
+            $response = $this->client->request('PATCH', $uri, ['json' => $options]);
+            if($response->getStatusCode() == 403){
+                throw new \Exception('Operation not allowed.') 
+            }
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    public function getQuestionComments($question_id, $after = null)
+    {
+        try {
+            $uri = sprintf('questions/%s/comments', $question_id);
+            if($after){
+                $options = [
+                    'query' => [
+                        'after' => $after,
+                    ],
+                ];
+            } else{
+                $options = [];
+            }
+            $response = $this->client->request('GET', $uri, $options);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;       
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    public function deleteQuestionComment($question_id, $comment_id)
+    {
+        try {
+            $uri = sprintf('questions/%s/comments/%s', $question_id, $comment_id);
+            $response = $this->client->request('DELETE', $uri);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    public function getQuestionAnswers($question_id, $after = null)
+    {
+        try {
+            $uri = sprintf('questions/%s/answers', $question_id);
+            if($after){
+                $options = [
+                    'query' => [
+                        'after' => $after,
+                    ],
+                ];
+            } else{
+                $options = [];
+            }
+            $response = $this->client->request('GET', $uri, $options);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;       
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    public function deleteAnswerComment($question_id, $answer_id, $comment_id)
+    {
+        try {
+            $uri = sprintf('questions/%s/answers/%s/comments/$s', $question_id, $answer_id, $comment_id);
+            $response = $this->client->request('DELETE', $uri);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
 }
