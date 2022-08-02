@@ -95,7 +95,11 @@ class LoginController
         }
         $userRepo = new UserRepository($f3);
         $username = base64_decode($id);
-        $userRepo->changePassword($username, $password1);
+        $result = $userRepo->changePassword($username, $password1);
+        if ($result['success'] == true) {
+            $f3->reroute($f3->get('BASEURL').'/login');
+        }
+        
 
     }
 
