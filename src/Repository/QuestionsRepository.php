@@ -206,4 +206,77 @@ class QuestionRepository extends Repository
             ];
         }
     }
+
+    public function updateCommentVote($question_id, $answer_id, $comment_id, $username, $inc = true, $upvote = true)
+    {
+        $operation = ($inc) ? 'increment' : 'decrement';
+        $target = ($upvote) ? 'upvotes' : 'downvotes';
+        try {
+            $uri = sprintf('questions/%s/answers/%s/comments/$s/vote/$s', $question_id, $answer_id, $comment_id, $username);
+            $options = [
+                'operation' => $operation,
+                'target' => $target,
+            ];
+            $response = $this->client->request('PATCH', $uri, ['json' => $options]);
+            if($response->getStatusCode() == 403){
+                throw new \Exception('Operation not allowed.') 
+            }
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    public function updateAnswerVote($question_id, $answer_id, $username, $inc = true, $upvote = true)
+    {
+        $operation = ($inc) ? 'increment' : 'decrement';
+        $target = ($upvote) ? 'upvotes' : 'downvotes';
+        try {
+            $uri = sprintf('questions/%s/answers/%s/vote/$s', $question_id, $answer_id, $username);
+            $options = [
+                'operation' => $operation,
+                'target' => $target,
+            ];
+            $response = $this->client->request('PATCH', $uri, ['json' => $options]);
+            if($response->getStatusCode() == 403){
+                throw new \Exception('Operation not allowed.') 
+            }
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    public function getAnswerComments($question_id, $answer_id, $after = null)
+    {
+        try {
+            $uri = sprintf('questions/%s/answers/$s/comments', $question_id, $answer_id);
+            if($after){
+                $options = [
+                    'query' => [
+                        'after' => $after,
+                    ],
+                ];
+            } else{
+                $options = [];
+            }
+            $response = $this->client->request('GET', $uri, $options);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;       
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }
+    
 }
