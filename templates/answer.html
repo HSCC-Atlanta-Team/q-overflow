@@ -1,11 +1,25 @@
-<div class="answer">
-    <div class="answer-id">{{ @answer.id }}</div>
-    <div class="answer-creator">{{ @answer.creator }}</div>
-    <div class="answer-created">{{ @answer.createdAt }}</div>
-    <div class="answer-text">{{ @answer.text }}</div>
-    <div class="answer-stats">
-        <div class="answer-comments">{{ @answer.accepted }}</div>
-        <div class="answer-upvotes">{{ @answer.upvotes }}</div>
-        <div class="answer-downvotes">{{ @answer.downvotes }}</div>
+<!-- answer -->
+<div class="card answer accepted" data-id="6547">
+    <div class="card-header">
+        <div class="answer-stats float-end">
+            <a href="3" class="upvotes"><i data-feather="thumbs-up"></i>3</a>
+            <a href="#" class="downvotes"><i data-feather="thumbs-down"></i>1</a>
+        </div>
+        <div class="user-panel">
+            <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
+            Username on July 24, 2022
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="card-text">This is an answer to the question.</div>
+        <div class="answer-comment-count">3 comments</div>
+        <div class="comments-list">
+        </div>
+        <!-- /comments-list -->
+    </div>
+    <!-- /card-body-->
+    <div class="card-footer text-end">
+        <a href="#" class="card-link">Add A Comment</a>
     </div>
 </div>
+<!-- /answer -->
