@@ -25,10 +25,14 @@
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         -->
-        <div class="float-right">
-          <a href="{{ @BASEURL }}"><img src="{{@SESSION.user->getGravatar(64)}}"></a>
-          <span id="user_points">Points:  {{@SESSION.user->getPoints()}}</span>
-        </div>
+        <check if="{{@SESSION.user}}">
+          <true>
+            <div class="float-right">
+              <a href="{{ @BASEURL }}"><img src="{{@SESSION.user->getGravatar(64)}}"></a>
+              <span id="user_points">Points:  {{@SESSION.user->getPoints()}}</span>
+            </div>
+          </true>
+        </check>
       </div>
     </div>
   </nav>
