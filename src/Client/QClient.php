@@ -16,5 +16,15 @@ class QClient extends Client
             ]
         ]);
     }
+
+    public function doRequest(string $method, $uri = '', array $options = [])
+    {
+        
+        $f3 = \Base::instance();
+        $sleep = floor(1000000 / $this->$f3->get('RATE_LIMIT'));
+        uusleep((int)$sleep);
+        
+        return $this->request($method, $url, $options);
+    }
 }
 
