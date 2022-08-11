@@ -21,10 +21,10 @@ class QClient extends Client
     {
         
         $f3 = \Base::instance();
-        $sleep = floor(1000000 / $this->$f3->get('RATE_LIMIT'));
-        uusleep((int)$sleep);
+        $sleep = floor(1000000 / $f3->get('RATE_LIMIT'));
+        usleep((int)$sleep);
         
-        return $this->request($method, $url, $options);
+        return $this->request($method, $uri, $options);
     }
 }
 

@@ -8,20 +8,6 @@ use Qoverflow\Controller\LoginController;
 
 class UserRepository extends Repository
 {
-    protected $client;
-    protected $f3;
-
-    public function __construct($f3, QClient $client = null)
-    {
-        $this->f3 = $f3;
-        // if no client was provided, create one
-        if (!$client) {
-            $client = new QClient($f3->get('secrets.API_KEY'));
-        }
-
-        $this->client = $client;
-    }
-
     public function getUsers($after = null)
     {
         try {
@@ -78,7 +64,7 @@ class UserRepository extends Repository
         try {
             $uri = sprintf('users/%s/auth', $user->getUsername());
 
-            $response = $this->client->request('POST', $uri, [
+            $response = $this->client->doRequest('POST', $uri, [
                 'json' => [
                     'key' => $user->getKey($password),
                 ],
