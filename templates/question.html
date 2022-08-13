@@ -1,46 +1,44 @@
 <div class="card question" data-id="123">
-    <div class="card-header">
-      <div class="question-header">
-        <h5 class="card-title">
-          What is a Question? This is a really long title
-        </h5>
+  <div class="card-header">
+    <div class="question-header">
+      <h5 class="card-title">
+        What is a Question? This is a really long title
+      </h5>
 
-        <div class="question-stats float-end" data-id="2232">
-          <span class="views"><i data-feather="eye"></i>12</span>
-          <a href="3" class="upvotes"><i data-feather="thumbs-up"></i>3</a>
-          <a href="#" class="downvotes"
-            ><i data-feather="thumbs-down"></i>1</a
-          >
-        </div>
-        <div class="card-subtitle">
-          <div class="user-panel">
-            <img
-              src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22"
-            />
-            Username on July 28, 2022
-          </div>
+      <div class="question-stats float-end" data-id="2232">
+        <span class="views"><i data-feather="eye"></i>12</span>
+        <a href="3" class="upvotes"><i data-feather="thumbs-up"></i>3</a>
+        <a href="#" class="downvotes"><i data-feather="thumbs-down"></i>1</a>
+      </div>
+      <div class="card-subtitle">
+        <div class="user-panel">
+          <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
+          Username on July 28, 2022
         </div>
       </div>
     </div>
-    <div class="card-body">
-      <div class="question-body">This is the question I'm asking...</div>
-      <div class="question-answer-count">5 answers 3 comments</div>
-      <!-- comments -->
-      <div class="comments-list">
-        
-        
-      </div>
-      <!-- /comments list -->
-
-      <!-- answers -->
-      <div class="answers-list">
-
-      </div>
-      <!-- /answer-list -->
-    </div> <!-- /card-body -->
-    <div class="card-footer">
-      <div class="question-actions float-end">
-        <a href="#" class="card-link">Add A Comment</a>
-        <a href="#" class="card-link">Add An Answer</a>
-      </div>
+  </div>
+  <div class="card-body">
+    <div class="question-body">This is the question I'm asking...</div>
+    <div class="question-answer-count">5 answers 3 comments</div>
+    <!-- comments -->
+    <div class="comments-list">
+      <repeat group="{{ @comments }}" value="{{ @comment }}">
+        <include href="templates/comment.html" />
+      </repeat>
     </div>
+    <!-- /comments list -->
+    <!-- answers -->
+    <div class="answers-list">
+      <repeat group="{{ @answers }}" value="{{ @answer }}">
+        <include href="templates/answer.html" />
+      </repeat>
+    </div>
+    <!-- /answer-list -->
+  </div> <!-- /card-body -->
+  <div class="card-footer">
+    <div class="question-actions float-end">
+      <a href="#" class="card-link">Add A Comment</a>
+      <a href="#" class="card-link">Add An Answer</a>
+    </div>
+  </div>
