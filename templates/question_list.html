@@ -1,0 +1,9 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <repeat group="{{ @questions }}" value="{{ @question }}">
+                <include href="templates/question.html" />
+            </repeat>
+        </div>
+    </div>
+</div>
