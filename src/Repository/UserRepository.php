@@ -4,31 +4,19 @@ namespace Qoverflow\Repository;
 
 use Qoverflow\Model\User;
 use Qoverflow\Client\QClient;
+use Qoverflow\Model\Answer;
+use Qoverflow\Model\Comment;
+use Qoverflow\Model\Question;
 use Qoverflow\Controller\LoginController;
 
 class UserRepository extends Repository
 {
-    protected $client;
-    protected $f3;
-
-    public function __construct($f3, QClient $client = null)
-    {
-        $this->f3 = $f3;
-        // if no client was provided, create one
-        if (!$client) {
-            $client = new QClient($f3->get('secrets.API_KEY'));
-        }
-
-        $this->client = $client;
-    }
 
     public function getUsers($after = null)
     {
         try {
             $uri = 'users';
-            $response = $this->client->request('GET', $uri);
-
-            $data = json_decode($response->getBody()->getContents(), true);
+            $data = $this->client->multiRequest('GET', $uri, User::class, 'users');
 
             return $data;
         } catch (\Exception $e) {
@@ -43,11 +31,9 @@ class UserRepository extends Repository
         try {
             $uri = 'users';
             
-            $response = $this->client->request('POST', $uri, [
+            $data = $this->client->singleRequest('POST', $uri, User::class, 'user', [
                 'json' => $user->forCreateUser($password),
             ]);
-
-            $data = json_decode($response->getBody()->getContents(), true);
 
             return $data;
         } catch (\Exception $e) {
@@ -59,11 +45,11 @@ class UserRepository extends Repository
 
     public function getUser($username)
     {
+        $modelKey = md5(User::class.$username);
+
         try {
             $uri = sprintf('users/%s', $username);
-            $response = $this->client->request('GET', $uri);
-
-            $data = json_decode($response->getBody()->getContents(), true);
+            $data = $this->client->singleRequest('GET', $uri, User::class, 'user');
 
             return $data;
         } catch (\Exception $e) {
@@ -73,11 +59,12 @@ class UserRepository extends Repository
         }
     }
 
-    public function authUser(User $user, $password)
+    public function authUser(User $user, $password): bool
     {
         try {
             $uri = sprintf('users/%s/auth', $user->getUsername());
 
+            // Don't cache auth requests - use the base 'request' here
             $response = $this->client->request('POST', $uri, [
                 'json' => [
                     'key' => $user->getKey($password),
@@ -86,13 +73,12 @@ class UserRepository extends Repository
 
             $data = json_decode($response->getBody()->getContents(), true);
 
-            return $data;
+            return $data['success'] === true;
         } catch (\Exception $e) {
-            return [
-                'error' => $e->getMessage(),
-            ];
+            return false;
         }
     }
+
     public function getUserQuestions($username, $after = null)
     {
         try {
@@ -106,9 +92,7 @@ class UserRepository extends Repository
             } else{
                 $options = [];
             }
-            $response = $this->client->request('GET', $uri, $options);
-
-            $data = json_decode($response->getBody()->getContents(), true);
+            $data = $this->client->multiRequest('GET', $uri, Question::class, 'questions', $options);
 
             return $data;       
         } catch (\Exception $e) {
@@ -131,8 +115,7 @@ class UserRepository extends Repository
             } else{
                 $options = [];
             }
-            $response = $this->client->request('GET', $uri, $options);
-            $data = json_decode($response->getBody()->getContents(), true);
+            $data = $this->client->multiRequest('GET', $uri, Answer::class, 'answers', $options);
 
             return $data;       
         } catch (\Exception $e) {
@@ -142,29 +125,23 @@ class UserRepository extends Repository
         }
     }
 
-    public function updateUser(User $user)
+    public function updateUser(User $user, $password = null): bool
     {
         try {
             $uri = sprintf('users/%s', $user->getUsername());
-            $userData = $user->toArray();
-            unset($userData['user_id']);
-            unset($userData['username']);
-            unset($userData['salt']);
             $response = $this->client->request('PATCH', $uri, [
-                'json' => $userData,
+                'json' => $user->forUpdateUser($password),
             ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
 
-            return $data;
+            return $data['success'] === true;
         } catch (\Exception $e) {
-            return [
-                'error' => $e->getMessage(),
-            ];
+            return false;
         }
     }
 
-    public function changePassword($username, $password)
+    public function changePassword($username, $password): bool
     {
         $salt = md5($username.$this->f3->get('secrets.SECRET_KEY'));
         $key = LoginController::deriveKey($username, $password, $this->f3->get('secrets.SECRET_KEY'));
@@ -178,31 +155,27 @@ class UserRepository extends Repository
 
             $data = json_decode($response->getBody()->getContents(), true);
 
-            return $data;
+            return $data['success'] === true;
         } catch (\Exception $e) {
-            return [
-                'error' => $e->getMessage(),
-            ];
+            return false;
         }
     }
 
-    public function deleteUser($username)
+    public function deleteUser($username): bool
     {
         try {
             $uri = sprintf('users/%s', $username);
-            $response = $this->client->request('DELETE', $uri);
+            $response = $this->client->doRequest('DELETE', $uri);
 
             $data = json_decode($response->getBody()->getContents(), true);
 
-            return $data;
+            return $data['success'] === true;
         } catch (\Exception $e) {
-            return [
-                'error' => $e->getMessage(),
-            ];
+            return false;
         }
     }
 
-    public function updatePoints($username, $points, $inc = true)
+    public function updatePoints($username, $points, $inc = true): bool
     {
         $operation = ($inc) ? 'increment' : 'decrement';
         try {
@@ -215,14 +188,13 @@ class UserRepository extends Repository
 
             $data = json_decode($response->getBody()->getContents(), true);
 
-            return $data;
+            return $data['success'] === true;
         } catch (\Exception $e) {
-            return [
-                'error' => $e->getMessage(),
-            ];
+            return false;
         }
     }
 }
+
 
 
 
