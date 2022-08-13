@@ -10,35 +10,33 @@ use Qoverflow\Controller\LoginController;
 
 class QuestionRepository extends Repository
 {
-    protected $client;
-    protected $f3;
-
-    public function __construct($f3, QClient $client = null)
-    {
-        $this->f3 = $f3;
-        // if no client was provided, create one
-        if (!$client) {
-            $client = new QClient($f3->get('secrets.API_KEY'));
-        }
-
-        $this->client = $client;
-    }
 
     //public function for questions search
+    public function getQuestions(array $query = [])
+    {
+        try {
+            $uri = 'questions/search';
+            
+            $questions = $this->client->multiRequest('GET', $uri, Question::class, 'questions');
+
+            return $questions;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }   
+    }
 
     public function createQuestion(Question $question)
     {
         try {
             $uri = 'questions';
-            
 
-            $response = $this->client->request('POST', $uri, [
+            $newQuestion = $this->client->singleRequest('POST', $uri, Question::class, 'question', [
                 'json' =>  $question->forCreateQuestion(),
-            ]);
+            ], false);
 
-            $data = json_decode($response->getBody()->getContents(), true);
-
-            return $data;
+            return $newQuestion;
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
@@ -52,13 +50,11 @@ class QuestionRepository extends Repository
             $uri = sprintf('questions/%s/comments', $question_id);
             
 
-            $response = $this->client->request('POST', $uri, [
-                'json' =>  $question->forCreateComment(),
-            ]);
+            $comment = $this->client->singleRequest('POST', $uri, Comment::class, 'comment', [
+                'json' =>  $comment->toArray(),
+            ], false);
 
-            $data = json_decode($response->getBody()->getContents(), true);
-
-            return $data;
+            return $comment;
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
@@ -70,15 +66,30 @@ class QuestionRepository extends Repository
     {
         try {
             $uri = sprintf('questions/%s/answers', $question_id);
+
+            $answer = $this->client->singleRequest('POST', $uri, Answer::class, 'answer', [
+                'json' =>  $answer->toArray(),
+            ], false);
+
+            return $answer;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage(),
+            ];
+        }   
+    }
+
+    public function createAnswerComment($question_id, $answer_id, Comment $comment)
+    {
+        try {
+            $uri = sprintf('questions/%s/answers/%s/comments', $question_id, $answer_id);
             
 
-            $response = $this->client->request('POST', $uri, [
-                'json' =>  $question->forCreateAnswer(),
-            ]);
+            $answer = $this->client->singleRequest('POST', $uri, Comment::class, 'comment', [
+                'json' =>  $comment->toArray(),
+            ], false);
 
-            $data = json_decode($response->getBody()->getContents(), true);
-
-            return $data;
+            return $answer;
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
@@ -90,18 +101,17 @@ class QuestionRepository extends Repository
     {
         try {
             $uri = sprintf('questions/%s', $question_id);
-            $response = $this->client->request('GET', $uri);
+            $question = $this->client->singleRequest('GET', $uri, Question::class, 'question');
 
-            $data = json_decode($response->getBody()->getContents(), true);
-
-            return $data;
+            return $question;
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
             ];
         }
     }
-    public function updateVote($username, $question_id, $inc = true, $upvote = true)
+    
+    public function updateVote($username, $question_id, $inc = true, $upvote = true): bool
     {
         $operation = ($inc) ? 'increment' : 'decrement';
         $target = ($upvote) ? 'upvotes' : 'downvotes';
@@ -112,16 +122,12 @@ class QuestionRepository extends Repository
                 'target' => $target,
             ];
             $response = $this->client->request('PATCH', $uri, ['json' => $options]);
-            if($response->getStatusCode() == 403){
-                throw new \Exception('Operation not allowed.') 
-            }
+
             $data = json_decode($response->getBody()->getContents(), true);
 
-            return $data;
+            return $data['success'] === true;
         } catch (\Exception $e) {
-            return [
-                'error' => $e->getMessage(),
-            ];
+            return false;
         }
     }
 
@@ -138,11 +144,9 @@ class QuestionRepository extends Repository
             } else{
                 $options = [];
             }
-            $response = $this->client->request('GET', $uri, $options);
+            $comments = $this->client->multiRequest('GET', $uri, Comment::class, 'comments', $options);
 
-            $data = json_decode($response->getBody()->getContents(), true);
-
-            return $data;       
+            return $comments;       
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
@@ -150,19 +154,16 @@ class QuestionRepository extends Repository
         }
     }
 
-    public function deleteQuestionComment($question_id, $comment_id)
+
+    public function deleteQuestionComment($question_id, $comment_id): bool
     {
         try {
             $uri = sprintf('questions/%s/comments/%s', $question_id, $comment_id);
-            $response = $this->client->request('DELETE', $uri);
+            $response = $this->client->doRequest('DELETE', $uri, [], false);
 
-            $data = json_decode($response->getBody()->getContents(), true);
-
-            return $data;
+            return $response['success'] === true;
         } catch (\Exception $e) {
-            return [
-                'error' => $e->getMessage(),
-            ];
+            return false;
         }
     }
 
@@ -179,11 +180,9 @@ class QuestionRepository extends Repository
             } else{
                 $options = [];
             }
-            $response = $this->client->request('GET', $uri, $options);
+            $answers = $this->client->multiRequest('GET', $uri, Answer::class, 'answers', $options);
 
-            $data = json_decode($response->getBody()->getContents(), true);
-
-            return $data;       
+            return $answers;       
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
@@ -191,15 +190,33 @@ class QuestionRepository extends Repository
         }
     }
 
-    public function deleteAnswerComment($question_id, $answer_id, $comment_id)
+    public function deleteAnswerComment($question_id, $answer_id, $comment_id): bool
     {
         try {
             $uri = sprintf('questions/%s/answers/%s/comments/$s', $question_id, $answer_id, $comment_id);
-            $response = $this->client->request('DELETE', $uri);
+            $response = $this->client->doRequest('DELETE', $uri, [], false);
 
-            $data = json_decode($response->getBody()->getContents(), true);
+            return $response['success'] === true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+    public function getAnswerComments($question_id, $answer_id, $after = null)
+    {
+        try {
+            $uri = sprintf('questions/%s/answers/%s/comments', $question_id, $answer_id);
+            if($after){
+                $options = [
+                    'query' => [
+                        'after' => $after,
+                    ],
+                ];
+            } else{
+                $options = [];
+            }
+            $comments = $this->client->multiRequest('GET', $uri, Comment::class, 'comments', $options);
 
-            return $data;
+            return $comments;       
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
@@ -207,3 +224,4 @@ class QuestionRepository extends Repository
         }
     }
 }
+

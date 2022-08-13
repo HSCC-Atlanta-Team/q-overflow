@@ -1,27 +1,17 @@
 <?php
+
+use Qoverflow\Model\Mail;
+
 class MailRepository extends Repository
 {
-    protected $client;
-
-    public function __construct(string $apiKey, QClient $client = null)
-    {
-        if (!$client) {
-
-            $client = new QClient($apiKey);
-
-        }
-        $this->client = $client;
-
-    }
 
     public function mailGet($username, $after=null)
     {
         try {
             $uri = "mail/" . $username . '?after='.$after;
-            $response = $this->client->request('GET', $uri);
-            $data = json_decode($response->getBody()->getContents(), true);
-            return $data;
-
+            $mails = $this->client->multiRequest('GET', $uri, Mail::class);
+            
+            return $mails;
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
@@ -39,16 +29,12 @@ class MailRepository extends Repository
                 'text' => $mail->getText(),
             ];
             
-            $response = $this->client->request('POST', $uri, [
+            $mail = $this->client->singleRequest('POST', $uri, [
                 'json' => $data,
             ]);
 
-            $data = json_decode($response->getBody()->getContents(), true);
-
-            return $data;
-
+            return $mail;
         } catch (\Exception $e) {
-
             return [
                 'error' => $e->getMessage(),
             ];

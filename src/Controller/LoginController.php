@@ -24,7 +24,7 @@ class LoginController
         $username = $f3->get('REQUEST.username');
         $email = $f3->get('REQUEST.email');
         $password = $f3->get('REQUEST.password');
-        $repo = new UserRepository($f3);
+        $repo = new UserRepository();
         $user = new User([
             'username' => $username,
             'email' => $email,
@@ -34,7 +34,7 @@ class LoginController
         if ($response['success'] === true) {
             $userData = $repo->getUser($username);
             $user = new User($userData['user']);
-            $f3->set('SESSION.user', $user);
+            $f3->set('SESSION.username', $user->getUsername());
             $f3->reroute($f3->get('BASEURL').'/dashboard');
         } else {
             $f3->reroute($f3->get('BASEURL').'/login');
@@ -45,7 +45,7 @@ class LoginController
 
     public function logout($f3)
     {
-        $f3->set('SESSION.user', null);
+        $f3->set('SESSION.username', null);
         $f3->reroute($f3->get('BASEURL').'/login');
     }
 
@@ -87,7 +87,7 @@ class LoginController
 
 
         }
-        $userRepo = new UserRepository($f3);
+        $userRepo = new UserRepository();
         $username = base64_decode($id);
         $result = $userRepo->changePassword($username, $password1);
         if ($result['success'] == true) {
@@ -110,7 +110,7 @@ class LoginController
 
     public function doSignup($f3) 
     {
-        $userRepo = new UserRepository($f3);
+        $userRepo = new UserRepository();
 
         $username = $f3->get('REQUEST.username_signup');
         $email = $f3->get('REQUEST.email_signup');
@@ -120,11 +120,11 @@ class LoginController
             'username' => $username,
             'email' => $email, 
         ]);
-        $newUser = $userRepo->createUser($user->forCreateUser($password));
+        $newUser = $userRepo->createUser($user, $password);
 
         if ($newUser['success'] === true) {
-            $user = new User($newUser['user']);
-            $f3->set('SESSION.user', $user);
+            
+            $f3->set('SESSION.username', $user->getUsername());
 
             $f3->reroute($f3->get('BASEURL').'/dashboard');
    
