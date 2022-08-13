@@ -2,6 +2,7 @@
 
 require 'vendor/autoload.php';
 use Qoverflow\Model\User;
+use Apix\Cache\Pdo\Sqlite;
 use Qoverflow\Repository\UserRepository;
 use Qoverflow\Controller\LoginController;
 
