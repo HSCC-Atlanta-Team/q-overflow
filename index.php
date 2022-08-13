@@ -24,4 +24,20 @@ $f3->route('GET /test', function ($f3) {
 $f3->config('config/globals.cfg');
 $f3->config('config/routes.cfg');
 $f3->config('config/secrets.cfg');
+
+// get logged in user 
+if ($_SESSION['username']) {
+    $currentUser = (new UserRepository())->getUser($_SESSION['username']);
+    $currentUser = new User($currentUser['user']);
+} else if ($_COOKIE['username']) {
+    if (md5($_COOKIE['username'].$f3->get('secrets.SECRET_KEY')) == $_COOKIE['hash']) {
+        $currentUser = $repo->getUser($_COOKIE['username']);
+        $currentUser = new User($currentUser);
+    }
+} else {
+    $currentUser = new User([]);
+}
+
+$f3->set('currentUser', $currentUser);
+
 $f3->run();

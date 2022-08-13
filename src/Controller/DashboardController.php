@@ -9,8 +9,8 @@ class DashboardController extends BaseController
 {
     public function index ($f3)
     {
-        $repo = new UserRepository($f3);
-        $username = $f3->get('SESSION.user')->getUsername();
+        $repo = new UserRepository();
+        $username = $f3->get('currentUser')->getUsername();
         $myQuestions = $repo->getUserQuestions($username);
         $myAnswers = $repo->getUserAnswers($username);
 

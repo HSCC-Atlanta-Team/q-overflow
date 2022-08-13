@@ -1,24 +1,11 @@
 <?php
 class MailRepository extends Repository
 {
-    protected $client;
-
-    public function __construct(string $apiKey, QClient $client = null)
-    {
-        if (!$client) {
-
-            $client = new QClient($apiKey);
-
-        }
-        $this->client = $client;
-
-    }
-
     public function mailGet($username, $after=null)
     {
         try {
             $uri = "mail/" . $username . '?after='.$after;
-            $response = $this->client->request('GET', $uri);
+            $response = $this->client->doRequest('GET', $uri);
             $data = json_decode($response->getBody()->getContents(), true);
             return $data;
 
@@ -39,7 +26,7 @@ class MailRepository extends Repository
                 'text' => $mail->getText(),
             ];
             
-            $response = $this->client->request('POST', $uri, [
+            $response = $this->client->doRequest('POST', $uri, [
                 'json' => $data,
             ]);
 

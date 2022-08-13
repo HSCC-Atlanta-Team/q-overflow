@@ -10,20 +10,6 @@ use Qoverflow\Controller\LoginController;
 
 class QuestionRepository extends Repository
 {
-    protected $client;
-    protected $f3;
-
-    public function __construct($f3, QClient $client = null)
-    {
-        $this->f3 = $f3;
-        // if no client was provided, create one
-        if (!$client) {
-            $client = new QClient($f3->get('secrets.API_KEY'));
-        }
-
-        $this->client = $client;
-    }
-
     //public function for questions search
 
     public function createQuestion(Question $question)
@@ -32,7 +18,7 @@ class QuestionRepository extends Repository
             $uri = 'questions';
             
 
-            $response = $this->client->request('POST', $uri, [
+            $response = $this->client->doRequest('POST', $uri, [
                 'json' =>  $question->forCreateQuestion(),
             ]);
 
@@ -52,7 +38,7 @@ class QuestionRepository extends Repository
             $uri = sprintf('questions/%s/comments', $question_id);
             
 
-            $response = $this->client->request('POST', $uri, [
+            $response = $this->client->doRequest('POST', $uri, [
                 'json' =>  $question->forCreateComment(),
             ]);
 
@@ -72,7 +58,7 @@ class QuestionRepository extends Repository
             $uri = sprintf('questions/%s/answers', $question_id);
             
 
-            $response = $this->client->request('POST', $uri, [
+            $response = $this->client->doRequest('POST', $uri, [
                 'json' =>  $question->forCreateAnswer(),
             ]);
 
@@ -90,7 +76,7 @@ class QuestionRepository extends Repository
     {
         try {
             $uri = sprintf('questions/%s', $question_id);
-            $response = $this->client->request('GET', $uri);
+            $response = $this->client->doRequest('GET', $uri);
 
             $data = json_decode($response->getBody()->getContents(), true);
 
@@ -111,7 +97,7 @@ class QuestionRepository extends Repository
                 'operation' => $operation,
                 'target' => $target,
             ];
-            $response = $this->client->request('PATCH', $uri, ['json' => $options]);
+            $response = $this->client->doRequest('PATCH', $uri, ['json' => $options]);
             if($response->getStatusCode() == 403){
                 throw new \Exception('Operation not allowed.') 
             }
@@ -138,7 +124,7 @@ class QuestionRepository extends Repository
             } else{
                 $options = [];
             }
-            $response = $this->client->request('GET', $uri, $options);
+            $response = $this->client->doRequest('GET', $uri, $options);
 
             $data = json_decode($response->getBody()->getContents(), true);
 
@@ -154,7 +140,7 @@ class QuestionRepository extends Repository
     {
         try {
             $uri = sprintf('questions/%s/comments/%s', $question_id, $comment_id);
-            $response = $this->client->request('DELETE', $uri);
+            $response = $this->client->doRequest('DELETE', $uri);
 
             $data = json_decode($response->getBody()->getContents(), true);
 
@@ -179,7 +165,7 @@ class QuestionRepository extends Repository
             } else{
                 $options = [];
             }
-            $response = $this->client->request('GET', $uri, $options);
+            $response = $this->client->doRequest('GET', $uri, $options);
 
             $data = json_decode($response->getBody()->getContents(), true);
 
@@ -195,7 +181,7 @@ class QuestionRepository extends Repository
     {
         try {
             $uri = sprintf('questions/%s/answers/%s/comments/$s', $question_id, $answer_id, $comment_id);
-            $response = $this->client->request('DELETE', $uri);
+            $response = $this->client->doRequest('DELETE', $uri);
 
             $data = json_decode($response->getBody()->getContents(), true);
 

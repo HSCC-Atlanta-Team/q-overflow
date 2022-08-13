@@ -2,10 +2,10 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <img src="{{ @SESSION.user->getGravatar(128) }}" />
-          <div class="h3 username">{{ @SESSION.user->getUsername() }}</div>
-          <div class="h4">Email: {{ @SESSION.user->getEmail() }}</div>
-          <div class="h4 points">Points: {{ @SESSION.user->getPoints() }}</div>
+          <img src="{{ @currentUser->getGravatar(128) }}" />
+          <div class="h3 username">{{ @currentUser->getUsername() }}</div>
+          <div class="h4">Email: {{ @currentUser->getEmail() }}</div>
+          <div class="h4 points">Points: {{ @currentUser->getPoints() }}</div>
         </div>
         <div class="col">
           <h3>My Questions</h3>
