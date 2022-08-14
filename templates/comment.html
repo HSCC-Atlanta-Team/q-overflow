@@ -2,8 +2,8 @@
     <div class="card comment" data-id="{{ @comment->getCommentId()}}">
         <div class="card-header">
             <div class="comment-stats float-end">
-                <a href="3" class="upvotes"><i data-feather="thumbs-up"></i>{{ @comment->getUpvotes()}}</a>
-                <a href="#" class="downvotes"><i data-feather="thumbs-down"></i>{{ @comment->getDownvotes() }}</a>
+                <span class="upvotes badge bg-success"><i data-feather="thumbs-up"></i><span class="count">{{ @comment->getUpvotes()}}</span></span>
+                <span class="downvotes badge bg-danger"><i data-feather="thumbs-down"></i><span class="count">{{ @comment->getDownvotes() }}</span></span>
             </div>
             <div class="user-panel">
                 <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
