@@ -7,7 +7,7 @@
         </div>
         <div class="user-panel">
             <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
-            {{@answer->getCreator()}} on {{@answer->getCreatedAt()}}
+            {{@answer->getCreator()}} <span data-livestamp="{{ @answer->getCreatedAt()/1000 }}"></span>
         </div>
     </div>
     <div class="card-body">
