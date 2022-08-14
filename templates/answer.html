@@ -1,9 +1,9 @@
 <!-- answer -->
-<div class="card answer {{ @answer->getAccepted() ?: 'accepted'}}" data-id="{{@answer->getAnswer_id()}}">
+<div class="card answer {{ @answer->getAccepted() ?: 'accepted'}}" data-id="{{@answer->getAnswerId()}}">
     <div class="card-header">
         <div class="answer-stats float-end">
-            <a href="3" class="upvotes"><i data-feather="thumbs-up"></i>{{@answer->getUpvotes()}}</a>
-            <a href="#" class="downvotes"><i data-feather="thumbs-down"></i>{@answer->getDownvotes()}}</a>
+            <span class="upvotes badge bg-success"><i data-feather="thumbs-up"></i><span class="count">{{@answer->getUpvotes()}}</span></span>
+            <span class="downvotes badge bg-danger"><i data-feather="thumbs-down"></i><span class="count">{{@answer->getDownvotes()}}</span></span>
         </div>
         <div class="user-panel">
             <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
@@ -12,7 +12,6 @@
     </div>
     <div class="card-body">
         <div class="card-text">{{@answer->getText()}}</div>
-        <div class="answer-comment-count">{{@answer->getComments()}}</div>
         <div class="comments-list">
         </div>
         <!-- /comments-list -->

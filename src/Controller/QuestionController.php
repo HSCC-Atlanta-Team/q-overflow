@@ -10,6 +10,9 @@ class QuestionController extends BaseController
             new \Qoverflow\Model\Question([
                 'question_id' => 1,
                 'title' => 'This is a test',
+                'views' => 123,
+                'upvotes' => 500,
+                'downvotes' => 499,
             ]),
         ]);
         $f3->set('comments', [
@@ -19,7 +22,7 @@ class QuestionController extends BaseController
                 'upvotes' => "567",
                 'downvotes' => 900,
                 'creator' => "AbhiN",
-                "createdAt" => 1660519061625
+                "createdAt" => 1660519061625,
             ]),
             new \Qoverflow\Model\Comment([
                 'comment_id' => 2,
