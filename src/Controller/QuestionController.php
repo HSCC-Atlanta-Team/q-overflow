@@ -16,6 +16,10 @@ class QuestionController extends BaseController
             new \Qoverflow\Model\Comment([
                 'comment_id' => 1,
                 'text' => 'this is my first comment',
+                'upvotes' => "567",
+                'downvotes' => 900,
+                'creator' => "AbhiN",
+                "createdAt" => 1660519061625
             ]),
             new \Qoverflow\Model\Comment([
                 'comment_id' => 2,
