@@ -49,7 +49,6 @@ $f3->config('config/secrets.cfg');
 
 if ($_SESSION['username']) {
     $currentUser = (new UserRepository())->getUser($_SESSION['username']);
-    $currentUser = new User($currentUser['user']);
 } else if ($_COOKIE['username']) {
     if (md5($_COOKIE['username'].$f3->get('secrets.SECRET_KEY')) == $_COOKIE['hash']) {
         $currentUser = $repo->getUser($_COOKIE['username']);
