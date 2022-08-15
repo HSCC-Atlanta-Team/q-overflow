@@ -10,7 +10,7 @@ class QClient extends Client
 
     public function __construct(string $apiKey = null)
     {
-        $this->$f3 = \Base::instance();
+        $this->f3 = \Base::instance();
 
         parent::__construct([
             'base_uri' => 'https://qoverflow.api.hscc.bdpa.org/v1/',

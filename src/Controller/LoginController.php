@@ -122,9 +122,9 @@ class LoginController
         ]);
         $newUser = $userRepo->createUser($user, $password);
 
-        if ($newUser['success'] === true) {
+        if (!is_array($newUser) && $newUser->getUsername()) {
             
-            $f3->set('SESSION.username', $user->getUsername());
+            $f3->set('SESSION.username', $newUser->getUsername());
 
             $f3->reroute($f3->get('BASEURL').'/dashboard');
    

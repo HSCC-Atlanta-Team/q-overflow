@@ -2,3 +2,4 @@ vendor/
 composer.lock
 config/secrets.cfg
 tmp/*
+phpliteadmin.php
