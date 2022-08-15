@@ -8,7 +8,7 @@ use Qoverflow\Client\QClient;
 use Qoverflow\Model\Question;
 use Qoverflow\Controller\LoginController;
 
-class QuestionRepository extends Repository
+class QuestionsRepository extends Repository
 {
 
     //public function for questions search

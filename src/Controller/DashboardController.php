@@ -18,4 +18,10 @@ class DashboardController extends BaseController
         $f3->set('answers', $myAnswers);
         $f3->set('template', 'templates/dashboard.html');
     }
+    public function afterroute($f3)
+    {
+        echo \Template::instance()->render('templates/main.html');
+
+
+    }
 }
