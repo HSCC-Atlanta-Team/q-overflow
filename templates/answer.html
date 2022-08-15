@@ -1,18 +1,17 @@
 <!-- answer -->
-<div class="card answer accepted" data-id="6547">
+<div class="card answer {{ @answer->getAccepted() ?: 'accepted'}}" data-id="{{@answer->getAnswerId()}}">
     <div class="card-header">
         <div class="answer-stats float-end">
-            <a href="3" class="upvotes"><i data-feather="thumbs-up"></i>3</a>
-            <a href="#" class="downvotes"><i data-feather="thumbs-down"></i>1</a>
+            <span class="upvotes badge bg-success"><i data-feather="thumbs-up"></i><span class="count">{{@answer->getUpvotes()}}</span></span>
+            <span class="downvotes badge bg-danger"><i data-feather="thumbs-down"></i><span class="count">{{@answer->getDownvotes()}}</span></span>
         </div>
         <div class="user-panel">
             <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
-            Username on July 24, 2022
+            {{@answer->getCreator()}} <span data-livestamp="{{ @answer->getCreatedAt()/1000 }}"></span>
         </div>
     </div>
     <div class="card-body">
-        <div class="card-text">This is an answer to the question.</div>
-        <div class="answer-comment-count">3 comments</div>
+        <div class="card-text">{{@answer->getText()}}</div>
         <div class="comments-list">
         </div>
         <!-- /comments-list -->

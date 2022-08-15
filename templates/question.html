@@ -2,25 +2,25 @@
   <div class="card-header">
     <div class="question-header">
       <h5 class="card-title">
-        What is a Question? This is a really long title
+        {{ @question->getTitle() }}
       </h5>
 
       <div class="question-stats float-end" data-id="2232">
-        <span class="views"><i data-feather="eye"></i>12</span>
-        <a href="3" class="upvotes"><i data-feather="thumbs-up"></i>3</a>
-        <a href="#" class="downvotes"><i data-feather="thumbs-down"></i>1</a>
+        <span class="views badge bg-info"><i data-feather="eye"></i><span class="count">{{ @question->getViews() }}</span></span>
+        <span class="upvotes badge bg-success"><i data-feather="thumbs-up"></i><span class="count">{{ @question->getDownvotes() }}</span></span>
+        <span class="downvotes badge bg-danger"><i data-feather="thumbs-down"></i><span class="count">{{ @question->getUpvotes() }}</span></span>
       </div>
       <div class="card-subtitle">
         <div class="user-panel">
           <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
-          Username on July 28, 2022
+          {{ @question->getCreator() }} <span data-livestamp="{{ @question->getCreatedAt()/1000 }}"></span>
         </div>
       </div>
     </div>
   </div>
   <div class="card-body">
-    <div class="question-body">This is the question I'm asking...</div>
-    <div class="question-answer-count">5 answers 3 comments</div>
+    <div class="question-body">{{ @question->getText() }}</div>
+    <div class="question-answer-count">{{ @question->getAnswers() }} {{ @question->getComments() }}</div>
     <!-- comments -->
     <div class="comments-list">
       <repeat group="{{ @comments }}" value="{{ @comment }}">

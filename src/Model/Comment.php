@@ -9,7 +9,7 @@ class Comment extends Model
     protected $createdAt;
     protected $text;
     protected $upvotes;
-    protected $downvote;
+    protected $downvotes;
 
 
     /**
@@ -103,19 +103,19 @@ class Comment extends Model
     }
 
     /**
-     * Get the value of downvote
+     * Get the value of downvotes
      */
-    public function getDownvote()
+    public function getDownvotes()
     {
-        return $this->downvote;
+        return $this->downvotes;
     }
 
     /**
-     * Set the value of downvote
+     * Set the value of downvotes
      */
-    public function setDownvote($downvote): self
+    public function setDownvotes($downvotes): self
     {
-        $this->downvote = $downvote;
+        $this->downvotes = $downvotes;
 
         return $this;
     }
