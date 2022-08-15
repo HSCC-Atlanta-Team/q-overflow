@@ -12,19 +12,25 @@ $f3 = \Base::instance();
 
 $dbPath = __DIR__ . '/tmp/cache_db.sq3';
 
-$preflight = !file_exists($dbPath);
+if(true){
+    $dbh = new \PDO('sqlite:'.$dbPath);
+    $options = [
+        'db_table' => 'cache', 
+        'serializer' => 'php', 
+        'preflight' => true, 
+        'timestamp' => 'Y-m-d H:i:s', 
+        'prefix_key' => '', 
+        'prefix_tag' => 'tag:', 
+    ];
 
-$dbh = new \PDO('sqlite:'.$dbPath);
-$options = [
-    'db_table' => 'cache', 
-    'serializer' => 'php', 
-    'preflight' => $preflight, 
-    'timestamp' => 'Y-m-d H:i:s', 
-    'prefix_key' => '', 
-    'prefix_tag' => 'tag:', 
-];
-
-$cache = new Sqlite($dbh, $options);
+    $cache = new Sqlite($dbh, $options);
+} else{
+    $options = [
+        'directory' => 'tmp',
+        'locking' => true,
+    ];
+    $cache = new Cache\Files($options);
+}
 
 $f3->cache = $cache;
 

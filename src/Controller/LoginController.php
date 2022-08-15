@@ -31,9 +31,8 @@ class LoginController
         ]);
         $response = $repo->authUser($user, $password);
 
-        if ($response['success'] === true) {
-            $userData = $repo->getUser($username);
-            $user = new User($userData['user']);
+        if ($response === true) {
+            $user = $repo->getUser($username);
             $f3->set('SESSION.username', $user->getUsername());
             $f3->reroute($f3->get('BASEURL').'/dashboard');
         } else {
