@@ -131,4 +131,32 @@ class User extends Model
             'key' => $this->getKey($password),
         ];
     }
+
+    public function getLevel()
+    {
+        $points = $this->getPoints();
+        switch (true) {
+            case $points >= 10000:
+                return 7;
+            case $points >= 3000:
+                return 6;
+            case $points >= 1000:
+                return 5;
+            case $points >= 125:
+                return 4;
+            case $points >= 50:
+                return 3;
+            case $points >= 15:
+                return 2;
+            case $points >= 1:
+                return 1;
+        }
+
+        return 0;
+    }
+
+    public function can($levelRequired)
+    {
+        return $this->getLevel() >= $levelRequired;
+    }
 }
