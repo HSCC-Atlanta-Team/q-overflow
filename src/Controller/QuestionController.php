@@ -13,4 +13,10 @@ class QuestionController
         $f3->set('questions', $questions);
         $f3->set('template', 'templates/question_list.html');
     }
+    public function afterroute($f3)
+    {
+        echo \Template::instance()->render('templates/main.html');
+
+
+    }
 }
