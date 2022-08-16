@@ -4,6 +4,7 @@ namespace Qoverflow\Model;
 
 class User extends Model
 {
+    protected $primaryKey = 'username';
     protected $user_id;
     protected $salt;
     protected $username;

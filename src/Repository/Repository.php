@@ -20,4 +20,24 @@ class Repository
             $this->client = new QClient($this->f3->get('secrets.API_KEY'));
         }
     }
+
+    public function getCached($class, $id)
+    {
+        $cache = $this->f3->cache;
+        $modelKey = $this->getModelName($class) . $id;
+        if ($data = $cache->load($modelKey)) {
+            $model = new $class($data);
+
+            return $model;
+        }
+
+        return null;
+    }
+
+    private function getModelName($class)
+    {
+        $path = explode('\\', $class);
+
+        return array_pop($path);
+    }
 }

@@ -3,7 +3,8 @@
 namespace Qoverflow\Model;
 
 class Answer extends Model
-{
+{  
+    protected $primaryKey = 'answer_id';
     protected $answer_id;
     protected $creator;
     protected $createdAt;

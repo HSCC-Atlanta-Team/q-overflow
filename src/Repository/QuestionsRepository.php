@@ -32,9 +32,9 @@ class QuestionRepository extends Repository
         try {
             $uri = 'questions';
 
-            $newQuestion = $this->client->singleRequest('POST', $uri, Question::class, 'question', [
+            $newQuestion = $this->client->doRequest('POST', $uri, [
                 'json' =>  $question->forCreateQuestion(),
-            ], false);
+            ], 0 );
 
             return $newQuestion;
         } catch (\Exception $e) {
@@ -50,9 +50,9 @@ class QuestionRepository extends Repository
             $uri = sprintf('questions/%s/comments', $question_id);
             
 
-            $comment = $this->client->singleRequest('POST', $uri, Comment::class, 'comment', [
+            $comment = $this->client->doRequest('POST', $uri, [
                 'json' =>  $comment->toArray(),
-            ], false);
+            ], 0 );
 
             return $comment;
         } catch (\Exception $e) {
@@ -67,9 +67,9 @@ class QuestionRepository extends Repository
         try {
             $uri = sprintf('questions/%s/answers', $question_id);
 
-            $answer = $this->client->singleRequest('POST', $uri, Answer::class, 'answer', [
+            $answer = $this->client->doRequest('POST', $uri, [
                 'json' =>  $answer->toArray(),
-            ], false);
+            ], 0 );
 
             return $answer;
         } catch (\Exception $e) {
@@ -99,6 +99,10 @@ class QuestionRepository extends Repository
 
     public function getQuestion($question_id)
     {
+        if ($model = $this->getCached(Question::class, $question_id)) {
+            return $model;
+        }
+
         try {
             $uri = sprintf('questions/%s', $question_id);
             $question = $this->client->singleRequest('GET', $uri, Question::class, 'question');

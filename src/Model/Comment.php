@@ -4,6 +4,7 @@ namespace Qoverflow\Model;
 
 class Comment extends Model
 {
+    protected $primaryKey = 'comment_id';
     protected $comment_id;
     protected $creator;
     protected $createdAt;
