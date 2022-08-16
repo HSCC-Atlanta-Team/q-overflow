@@ -32,9 +32,13 @@ class QuestionsRepository extends Repository
         try {
             $uri = 'questions';
 
-            $newQuestion = $this->client->doRequest('POST', $uri, [
+            $data = $this->client->doRequest('POST', $uri, [
                 'json' =>  $question->forCreateQuestion(),
             ], 0 );
+
+            if($data['success']) {
+                $newQuestion = new Question($data['question']);
+            }
 
             return $newQuestion;
         } catch (\Exception $e) {
@@ -50,9 +54,15 @@ class QuestionsRepository extends Repository
             $uri = sprintf('questions/%s/comments', $question_id);
             
 
-            $comment = $this->client->doRequest('POST', $uri, [
+            $data = $this->client->doRequest('POST', $uri, [
                 'json' =>  $comment->toArray(),
             ], 0 );
+
+            if($data['success']) {
+                $newComment = new Comment($data['comment']);
+            }
+
+            return $newComment;
 
             return $comment;
         } catch (\Exception $e) {
@@ -67,9 +77,15 @@ class QuestionsRepository extends Repository
         try {
             $uri = sprintf('questions/%s/answers', $question_id);
 
-            $answer = $this->client->doRequest('POST', $uri, [
+            $data = $this->client->doRequest('POST', $uri, [
                 'json' =>  $answer->toArray(),
             ], 0 );
+
+            if($data['success']) {
+                $newAnswer = new Answer($data['answer']);
+            }
+
+            return $newAnswer;
 
             return $answer;
         } catch (\Exception $e) {

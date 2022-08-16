@@ -120,7 +120,6 @@ class LoginController
             'email' => $email, 
         ]);
         $newUser = $userRepo->createUser($user, $password);
-
         if (!is_array($newUser) && $newUser->getUsername()) {
             
             $f3->set('SESSION.username', $newUser->getUsername());
