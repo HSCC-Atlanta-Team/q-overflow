@@ -34,8 +34,7 @@ if(true){
 
 $f3->cache = $cache;
 
-$repo = new UserRepository();
-$repo->getUsers();
+
 
 $f3->route('GET /test', function ($f3) {
     if ($f3->get('ENVIRONMENT') == 'production') {
@@ -53,6 +52,9 @@ $f3->route('GET /test', function ($f3) {
 $f3->config('config/globals.cfg');
 $f3->config('config/routes.cfg');
 $f3->config('config/secrets.cfg');
+
+$repo = new UserRepository();
+$repo->getUsers();
 // get logged in user 
 
 if ($_SESSION['username']) {
