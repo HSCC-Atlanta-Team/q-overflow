@@ -35,7 +35,11 @@ class UserRepository extends Repository
                 'json' => $user->forCreateUser($password),
             ], 0 );
 
-            return $data;
+            if($data['success']) {
+                $user = new User($data['user']);
+            }
+
+            return $user;
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
