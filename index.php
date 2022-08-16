@@ -34,6 +34,8 @@ if(true){
 
 $f3->cache = $cache;
 
+$repo = new UserRepository();
+$repo->getUsers();
 
 $f3->route('GET /test', function ($f3) {
     if ($f3->get('ENVIRONMENT') == 'production') {

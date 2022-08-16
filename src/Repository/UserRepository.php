@@ -31,9 +31,9 @@ class UserRepository extends Repository
         try {
             $uri = 'users';
             
-            $data = $this->client->singleRequest('POST', $uri, User::class, 'user', [
+            $data = $this->client->doRequest('POST', $uri, [
                 'json' => $user->forCreateUser($password),
-            ]);
+            ], 0 );
 
             return $data;
         } catch (\Exception $e) {
@@ -45,7 +45,9 @@ class UserRepository extends Repository
 
     public function getUser($username)
     {
-        $modelKey = md5(User::class.$username);
+        if ($model = $this->getCached(User::class, $username)) {
+            return $model;
+        }
 
         try {
             $uri = sprintf('users/%s', $username);

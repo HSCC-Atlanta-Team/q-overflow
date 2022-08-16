@@ -5,6 +5,7 @@ namespace Qoverflow\Model;
 class Model
 {
     protected $f3;
+    protected $primaryKey;
 
     public function __construct(array $data = [])
     {
@@ -39,5 +40,12 @@ class Model
         }
  
         return $ret;
+    }
+
+    public function getId()
+    {
+        $method = 'get'.str_replace(' ', '', ucwords(str_replace('_', ' ', $this->primaryKey)));
+        
+        return $this->$method();
     }
 }
