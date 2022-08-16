@@ -4,6 +4,7 @@ namespace Qoverflow\Model;
 
 class Mail extends Model
 {
+    protected $primaryKey = 'mail_id';
     protected $mail_id;
     protected $sender;
     protected $receiver;
