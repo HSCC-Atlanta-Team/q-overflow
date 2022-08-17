@@ -2,6 +2,8 @@
 
 namespace Qoverflow\Model;
 
+use Parsedown;
+
 class Answer extends Model
 {  
     protected $primaryKey = 'answer_id';
@@ -74,7 +76,8 @@ class Answer extends Model
      */
     public function getText()
     {
-        return $this->text;
+        $parser = new Parsedown();
+        return $parser->text($this->text);
     }
 
     /**
