@@ -4,6 +4,8 @@ namespace Qoverflow\Repository;
 
 use GuzzleHttp\Client;
 use Qoverflow\Client\QClient;
+use Qoverflow\Model\Question;
+
 
 class Repository
 {
