@@ -4,7 +4,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item pe-3">
-          <a class="nav-link text-info fw-bold" href="#">Q-Overflow</a>
+          <a class="nav-link text-info fw-bold" href="{{ @BASEURL }}/questions">Q-Overflow</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{ @BASEURL }}/dashboard">Dashboard</a>
@@ -25,10 +25,10 @@
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         -->
-      <check if="{{@currentUser}}">
+      <check if="{{@currentUser->can(1)}}">
         <true>
           <div class="float-right">
-            <a href="{{ @BASEURL }}"><img src="{{@currentUser->getGravatar(64)}}"></a>
+            <a href="{{ @BASEURL }}"><img src="{{@currentUser->getGravatar(64)}}" ></a>
             <span id="user_points">Points: {{@currentUser->getPoints()}}</span>
           </div>
           <div>

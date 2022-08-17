@@ -6,7 +6,7 @@
             <span class="downvotes badge bg-danger"><i data-feather="thumbs-down"></i><span class="count">{{@answer->getDownvotes()}}</span></span>
         </div>
         <div class="user-panel">
-            <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
+            <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d62?s=22" class="gravatar" data-username="{{ @answer->getCreator() }}" data-size="22" />
             {{@answer->getCreator()}} <span data-livestamp="{{ @answer->getCreatedAt()/1000 }}"></span>
         </div>
     </div>

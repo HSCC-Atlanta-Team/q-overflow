@@ -12,7 +12,7 @@
       </div>
       <div class="card-subtitle">
         <div class="user-panel">
-          <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
+          <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d62?s=22" class="gravatar" data-username="{{ @question->getCreator() }}" data-size="22" />
           {{ @question->getCreator() }} <span data-livestamp="{{ @question->getCreatedAt()/1000 }}"></span>
         </div>
       </div>
