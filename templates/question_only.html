@@ -1,24 +1,29 @@
 <div class="card question" data-id="123">
-    <div class="card-header">
-      <div class="question-header">
-        <h5 class="card-title">
-          {{ @question->getTitle() }}
-        </h5>
-        <div class="question-actions float-end">
-            <a href="#" class="card-link btn btn-secondary">Add A Comment</a>
-            <a href="#" class="card-link btn btn-secondary">Add An Answer</a>
-          </div>
-        <div class="question-stats float-end" data-id="2232">
-          <span class="views badge bg-info"><i data-feather="eye"></i><span class="count">{{ @question->getViews() }}</span></span>
-          <span class="upvotes badge bg-success"><i data-feather="thumbs-up"></i><span class="count">{{ @question->getDownvotes() }}</span></span>
-          <span class="downvotes badge bg-danger"><i data-feather="thumbs-down"></i><span class="count">{{ @question->getUpvotes() }}</span></span>
-        </div>
-        <div class="question-answer-count">{{ @question->getAnswers() }} {{ @question->getComments() }}</div>
-        <div class="card-subtitle">
-          <div class="user-panel">
-            <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
-            {{ @question->getCreator() }} <span data-livestamp="{{ @question->getCreatedAt()/1000 }}"></span>
-          </div>
+  <div class="card-header">
+    <div class="question-header">
+      <div class="question-stats float-end" data-id="2232">
+        <span class="views badge bg-info"><i data-feather="eye"></i><span class="count">{{ @question->getViews()
+            }}</span></span>
+        <span class="upvotes badge bg-success"><i data-feather="thumbs-up"></i><span class="count">{{
+            @question->getDownvotes() }}</span></span>
+        <span class="downvotes badge bg-danger"><i data-feather="thumbs-down"></i><span class="count">{{
+            @question->getUpvotes() }}</span></span>
+      </div>
+      <h5 class="card-title">
+        <a href="{{ @BASE_URL }}/questions/{{ @question->getQuestionId() }}">{{ @question->getTitle() }}</a>
+      </h5>
+      <div class="card-subtitle">
+        <div class="user-panel">
+          <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d64?s=22" />
+          {{ @question->getCreator() }} <span data-livestamp="{{ @question->getCreatedAt()/1000 }}"></span>
         </div>
       </div>
+      <div class="question-actions float-end">
+        <a href="#" class="card-link">Add A Comment</a>
+        <a href="#" class="card-link">Add An Answer</a>
+      </div>
+      <div class="question-answer-count">Answers: {{ @question->getAnswers() }} Comments: {{ @question->getComments() }}
+      </div>
     </div>
+  </div>
+</div>
