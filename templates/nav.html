@@ -25,7 +25,7 @@
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         -->
-      <check if="{{@currentUser}}">
+      <check if="{{@currentUser->can(1)}}">
         <true>
           <div class="float-right">
             <a href="{{ @BASEURL }}"><img src="{{@currentUser->getGravatar(64)}}"></a>
