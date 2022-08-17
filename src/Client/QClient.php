@@ -37,7 +37,7 @@ class QClient extends Client
         $model = new $class($data);
 
         $modelKey = $this->getModelName($class) . $model->getId();
-        $cache->save($data, $modelKey, [], 180);
+        $cache->save($model->toArray(), $modelKey, [], 180);
 
         return $model;
     }
@@ -60,7 +60,7 @@ class QClient extends Client
             $model = new $class($item);
             $items[] = $model;
             $modelKey = $this->getModelName($class) . $model->getId();
-            $cache->save($data, $modelKey, [], 180);
+            $cache->save($model->toArray(), $modelKey, [], 180);
         }
 
 

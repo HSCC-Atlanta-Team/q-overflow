@@ -49,8 +49,8 @@ class UserRepository extends Repository
 
     public function getUser($username)
     {
-        if ($model = $this->getCached(User::class, $username)) {
-            return $model;
+        if ($this->getCached(User::class, $username)) {
+            return $this->getCached(User::class, $username);
         }
 
         try {
