@@ -48,4 +48,8 @@ $(document).ready(function () {
             loadGravitar(element);
         });
     });
+
+    $('.gravatar').each(function (idx, element) {
+        loadGravitar(element);
+    });
 });

@@ -115,8 +115,8 @@ class QuestionsRepository extends Repository
 
     public function getQuestion($question_id)
     {
-        if ($model = $this->getCached(Question::class, $question_id)) {
-            return $model;
+        if ($this->getCached(Question::class, $question_id)) {
+            return $this->getCached(Question::class, $question_id);
         }
 
         try {
