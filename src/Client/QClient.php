@@ -68,7 +68,7 @@ class QClient extends Client
         return $items;
     }
 
-    public function doRequest($method, $uri, $options = [], $ttl = 180, $tags)
+    public function doRequest($method, $uri, $options = [], $ttl = 180, $tags = [])
     {        
         $this->lastRequestKey = md5(sprintf(
             '%s%s%s',
