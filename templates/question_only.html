@@ -4,10 +4,16 @@
       <div class="question-stats float-end" data-id="2232">
         <span class="views badge bg-info"><i data-feather="eye"></i><span class="count">{{ @question->getViews()
             }}</span></span>
-        <span class="upvotes badge bg-success"><i data-feather="thumbs-up"></i><span class="count">{{
-            @question->getDownvotes() }}</span></span>
-        <span class="downvotes badge bg-danger"><i data-feather="thumbs-down"></i><span class="count">{{
-            @question->getUpvotes() }}</span></span>
+        <form action="{{ @BASEURL }}/questions/{{ @question->getId() }}/vote/{{ @currentUser->getUsername }}" method="patch">   
+          <button type="submit" class="upvotes btn btn-primary badge bg-success">
+            <i data-feather="thumbs-up"></i>
+            <span class="count">{{ @question->getUpvotes() }}</span>
+          </button>
+          <button class="downvotes badge bg-danger">
+            <i data-feather="thumbs-down"></i>
+            <span class="count">{{@question->getDownvotes() }}</span>
+          </button>
+        </form>
       </div>
       <h5 class="card-title">
         <a href="{{ @BASEURL }}/questions/{{ @question->getQuestionId() }}">{{ @question->getTitle() }}</a>
@@ -26,5 +32,6 @@
       </div>
     </div>
   </div>
+  
   
 </div>
