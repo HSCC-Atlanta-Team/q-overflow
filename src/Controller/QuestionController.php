@@ -114,13 +114,5 @@ class QuestionController
         $f3->reroute($url);
     }
 
-    public function addUpvotes($username, $question_id) 
-    {
-        $username = $f3->get('SESSION.username');
-        $question_id = $f3->get('question')->getQuestionId();
-        $questionRepo = new QuestionRepository();
-        $questionRepo->updateVote($username, $question_id);
-
-    }
 
 }

@@ -7,16 +7,9 @@
 
       <div class="question-stats float-end" data-id="2232">
         <span class="views badge bg-info"><i data-feather="eye"></i><span class="count">{{ @question->getViews()  }}</span></span>
-        <form action="{{ @BASEURL }}/questions/{{ @question->getId() }}/vote/{{ @currentUser->getUsername }}" method="patch">   
-          <button type="submit" class="upvotes btn btn-primary badge bg-success">
-            <i data-feather="thumbs-up"></i>
-            <span class="count">{{ @question->getUpvotes() }}</span>
-          </button>
-          <button class="downvotes badge bg-danger">
-            <i data-feather="thumbs-down"></i>
-            <span class="count">{{@question->getDownvotes() }}</span>
-          </button>
-        </form>
+        <span class="upvotes badge bg-success"><i data-feather="thumbs-up"></i><span class="count">{{ @question->getDownvotes() }}</span></span>
+        <span class="downvotes badge bg-danger"><i data-feather="thumbs-down"></i><span class="count">{{ @question->getUpvotes() }}</span></span>
+      </div>
       <div class="card-subtitle">
         <div class="user-panel">
           <img src="https://www.gravatar.com/avatar/96e707ce17abf956c0d6a151fe097d62?s=22" class="gravatar" data-username="{{ @question->getCreator() }}" data-size="22" />
@@ -41,11 +34,10 @@
       <repeat group="{{ @answers }}" value="{{ @answer }}">
         <include href="templates/answer.html" />
       </repeat>
+
     </div>
     <!-- /answer-list -->
-    
   </div> <!-- /card-body -->
-  
   <div class="card-footer">
     <div class="question-actions float-end">
       <check if="{{ @currentUser->can(2) }}">
