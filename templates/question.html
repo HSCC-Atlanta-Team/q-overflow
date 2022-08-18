@@ -39,8 +39,8 @@
   </div> <!-- /card-body -->
   <div class="card-footer">
     <div class="question-actions float-end">
-      <a href="#" class="card-link">Add A Comment</a>
-      <a href="#" class="card-link">Add An Answer</a>
+      <a href="{{ @BASEURL }}/comment" class="card-link">Add A Comment</a>
+      <a href="{{ @BASEURL }}/questions/{{ @question->getQuestionId() }}/answer" class="card-link">Add An Answer</a>
     </div>
   </div>
 </div>
