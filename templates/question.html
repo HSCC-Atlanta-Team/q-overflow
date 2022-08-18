@@ -24,19 +24,21 @@
 
       <!-- comments -->
     <div class="comments-list">
-      <loop from="@i=0" to="{{ @i < @question->getComments() }}" step="{{ @i++ }}">
+      <repeat group="{{ @comments }}" value="{{ @comment }}">
         <include href="templates/comment.html" />
-      </loop>
+      </repeat>
     </div>
     <!-- /comments list -->
     <!-- answers -->
     <div class="answers-list">
-      <loop from="@i=0" to="{{ @i < @question->getAnswers() }}" step="{{ @i++ }}">
+      <repeat group="{{ @answers }}" value="{{ @answer }}">
         <include href="templates/answer.html" />
-      </loop>
+      </repeat>
     </div>
     <!-- /answer-list -->
+    
   </div> <!-- /card-body -->
+  
   <div class="card-footer">
     <div class="question-actions float-end">
       <check if="{{ @currentUser->can(2) }}">
