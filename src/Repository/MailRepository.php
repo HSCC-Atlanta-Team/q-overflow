@@ -1,5 +1,7 @@
 <?php
 
+namespace Qoverflow\Repository;
+
 use Qoverflow\Model\Mail;
 
 class MailRepository extends Repository
