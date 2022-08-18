@@ -33,4 +33,30 @@ class QuestionController
 
 
     }
+
+    public function addQuestion($f3)
+    {
+        $title = $f3->get('REQUEST.question_title');
+        $text = $f3->get('REQUEST.question_text');
+        $question = new Question([
+            'creator' => $f3->get('currentUser')->getUsername(),
+            'title' => $title,
+            'text' => $text,
+        ]);
+
+        $newQuestion = (new QuestionsRepository())->createQuestion($question);
+
+        (new UserRepository())->updatePoints(
+            $f3->get('currentUser')->getUsername, 
+            1
+        );
+        
+        $url = sprintf(
+            '%s/questions/%s',
+            $f3->get('BASEURL'),
+            $newQuestion->getId()
+        );
+
+        $f3->reroute($url);
+    }
 }
