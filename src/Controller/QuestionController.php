@@ -2,6 +2,11 @@
 
 namespace Qoverflow\Controller;
 
+use Qoverflow\Model\Answer;
+use Qoverflow\Model\Comment;
+use Qoverflow\Model\Question;
+use Qoverflow\Repository\UserRepository;
+use SebastianBergmann\Template\Template;
 use Qoverflow\Repository\QuestionsRepository;
 
 class QuestionController
@@ -33,4 +38,80 @@ class QuestionController
 
 
     }
+
+//function for asking a question
+    public function addQuestion($f3)
+    {
+        $title = $f3->get('REQUEST.question_title');
+        $text = $f3->get('REQUEST.question_text');
+        $question = new Question([
+            'creator' => $f3->get('currentUser')->getUsername(),
+            'title' => $title,
+            'text' => $text,
+        ]);
+        $newQuestion = (new QuestionsRepository())->createQuestion($question);
+
+        (new UserRepository())->updatePoints(
+            $f3->get('SESSION.username'), 
+            1,
+        );
+
+
+        
+        $url = sprintf(
+            '%s/questions/%s',
+            $f3->get('BASEURL'),
+            $newQuestion->getQuestionId()
+        );
+
+        $f3->reroute($url);
+    }
+    
+//function for adding answer
+    public function addAnswer($f3)
+    {
+        $qId = $f3->get('PARAMS.qid');
+        $text = $f3->get('REQUEST.answer_text');
+
+        $answer = new Answer([
+            'creator' => $f3->get('currentUser')->getUsername(),
+            'text' => $text,
+        ]);
+        $response = (new QuestionsRepository())->createAnswer($qId, $answer);
+
+        (new UserRepository())->updatePoints(
+            $f3->get('SESSION.username'), 
+            2,
+        );
+
+        $url = sprintf(
+            '%s/questions/%s',
+            $f3->get('BASEURL'),
+            $qId
+        );
+
+        $f3->reroute($url);
+    }
+
+//function for adding comment
+    public function addComment($f3)
+    {
+        $qId = $f3->get('PARAMS.qid');
+        $text = $f3->get('REQUEST.comment_text');
+
+        $comment = new Comment([
+            'creator' => $f3->get('currentUser')->getUsername(),
+            'text' => $text,
+        ]);
+        $response = (new QuestionsRepository())->createComment($qId, $comment);
+
+        $url = sprintf(
+            '%s/questions/%s',
+            $f3->get('BASEURL'),
+            $qId
+        );
+
+        $f3->reroute($url);
+    }
+
 }
