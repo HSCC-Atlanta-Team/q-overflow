@@ -34,6 +34,7 @@ class QuestionController
 
     }
 
+//function for asking a question
     public function addQuestion($f3)
     {
         $title = $f3->get('REQUEST.question_title');
@@ -43,7 +44,6 @@ class QuestionController
             'title' => $title,
             'text' => $text,
         ]);
-
         $newQuestion = (new QuestionsRepository())->createQuestion($question);
 
         (new UserRepository())->updatePoints(
@@ -59,4 +59,52 @@ class QuestionController
 
         $f3->reroute($url);
     }
+    
+//function for adding answer
+    public function addAnswer($f3)
+    {
+        $qId = $f3->get('PARAMS.qid');
+        $text = $f3->get('REQUEST.answer_text');
+
+        $answer = new Answer([
+            'creator' => $f3->get('currentUser')->getUsername(),
+            'text' => $text,
+        ]);
+        $response = (new QuestionsRepository())->createAnswer($qId, $answer);
+
+        (new UserRepository())->updatePoints(
+            $f3->get('currentUser')->getUsername, 
+            2
+        );
+
+        $url = sprintf(
+            '%s/questions/%s',
+            $f3->get('BASEURL'),
+            $qId
+        );
+
+        $f3->reroute($url);
+    }
+
+//function for adding comment
+    public function addComment($f3)
+    {
+        $qId = $f3->get('PARAMS.qid');
+        $text = $f3->get('REQUEST.comment_text');
+
+        $comment = new Comment([
+            'creator' => $f3->get('currentUser')->getUsername(),
+            'text' => $text,
+        ]);
+        $response = (new QuestionsRepository())->createComment($qId, $comment);
+
+        $url = sprintf(
+            '%s/questions/%s',
+            $f3->get('BASEURL'),
+            $qId
+        );
+
+        $f3->reroute($url);
+    }
+
 }
