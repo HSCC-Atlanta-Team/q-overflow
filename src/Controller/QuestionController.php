@@ -52,14 +52,16 @@ class QuestionController
         $newQuestion = (new QuestionsRepository())->createQuestion($question);
 
         (new UserRepository())->updatePoints(
-            $f3->get('currentUser')->getUsername, 
-            1
+            $f3->get('SESSION.username'), 
+            1,
         );
-        
+
+
+       
         $url = sprintf(
             '%s/questions/%s',
             $f3->get('BASEURL'),
-            $newQuestion->getId()
+            $newQuestion->getQuestionId()
         );
 
         $f3->reroute($url);
@@ -78,8 +80,8 @@ class QuestionController
         $response = (new QuestionsRepository())->createAnswer($qId, $answer);
 
         (new UserRepository())->updatePoints(
-            $f3->get('currentUser')->getUsername, 
-            2
+            $f3->get('SESSION.username'), 
+            2,
         );
 
         $url = sprintf(
