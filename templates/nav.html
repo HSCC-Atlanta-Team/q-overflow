@@ -12,12 +12,16 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ @BASEURL }}/questions">Q&A</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ @BASEURL }}/login">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ @BASEURL }}/signup">Signup</a>
-        </li>
+        <check if="{{@currentUser->can(1)}}">
+          <false>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ @BASEURL }}/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ @BASEURL }}/signup">Signup</a>
+            </li>
+          </false>
+        </check>
       </ul>
       <!--
         <form class="d-flex" role="search">
@@ -28,7 +32,7 @@
       <check if="{{@currentUser->can(1)}}">
         <true>
           <div class="float-right">
-            <a href="{{ @BASEURL }}"><img src="{{@currentUser->getGravatar(64)}}" ></a>
+            <a href="{{ @BASEURL }}"><img src="{{@currentUser->getGravatar(64)}}"></a>
             <span id="user_points">Points: {{@currentUser->getPoints()}}</span>
           </div>
           <div>
