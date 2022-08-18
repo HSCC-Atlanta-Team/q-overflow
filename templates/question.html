@@ -22,25 +22,74 @@
     <div class="question-body">{{ @question->getText() }}</div>
     <div class="question-answer-count">{{ @question->getAnswers() }} {{ @question->getComments() }}</div>
 
-    
+      <!-- comments -->
     <div class="comments-list">
-      <repeat group="{{ @comments }}" value="{{ @comment }}">
+      <loop from="@i=0" to="{{ @i < @question->getComments() }}" step="{{ @i++ }}">
         <include href="templates/comment.html" />
-      </repeat>
+      </loop>
     </div>
     <!-- /comments list -->
     <!-- answers -->
     <div class="answers-list">
-      <repeat group="{{ @answers }}" value="{{ @answer }}">
+      <loop from="@i=0" to="{{ @i < @question->getAnswers() }}" step="{{ @i++ }}">
         <include href="templates/answer.html" />
-      </repeat>
+      </loop>
     </div>
     <!-- /answer-list -->
   </div> <!-- /card-body -->
   <div class="card-footer">
     <div class="question-actions float-end">
-      <a href="{{ @BASEURL }}/comment" class="card-link">Add A Comment</a>
-      <a href="{{ @BASEURL }}/questions/{{ @question->getQuestionId() }}/answer" class="card-link">Add An Answer</a>
+      <check if="{{ @currentUser->can(2) }}">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#commentModal{{ @question->getId() }}">
+          Add A Comment
+        </button>
+      </check>
+      <check if="{{ @currentUser->can(1) }}">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#answerModal{{ @question->getId() }}">
+          Add An Answer
+        </button>
+      </check>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="answerModal{{ @question->getId() }}" tabindex="-1" aria-labelledby="answerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Your Answer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ @BASEURL }}/questions/{{ @question->getId() }}/addAnswer" method="post">
+          <textarea id="answerText{{ @question->getId() }}" name="answer_text"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="commentModal{{ @question->getId() }}" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Your Comment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ @BASEURL }}/questions/{{ @question->getId() }}/addComment" method="post">
+          <textarea id="commentText{{ @question->getId() }}" name="comment_text"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+      </form>
     </div>
   </div>
 </div>
