@@ -8,7 +8,7 @@ class BaseController
     {
 
         if (!$f3->get('currentUser')->getUsername()) {
-            $f3->reroute($f3->get('BASEURL').'/login');
+            //$f3->reroute($f3->get('BASEURL').'/login');
 
         }
 
