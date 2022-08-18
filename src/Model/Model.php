@@ -25,6 +25,13 @@ class Model
                 $this->$method($value);
             }
         }
+        $cache = $this->f3->cache;
+        if ($data['cache'] === true) {
+            $cacheKey = md5(get_class($this).$this->getId());
+            if (!$data = $cache->load($cacheKey)) {
+                $cache->save($item, $cacheKey, null, $this->f3->get('CACHE_TTL'));
+            }
+        }
         
     }
 

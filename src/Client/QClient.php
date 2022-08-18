@@ -57,15 +57,16 @@ class QClient extends Client
 
         $items = [];
         foreach ($data as $item) {
-            $model = new $class($data);
+            $model = new $class($item);
             $items[] = $model;
             $modelKey = $this->getModelName($class) . $model->getId();
             $cache->save($model->toArray(), $modelKey, [], 180);
         }
 
 
-
+     
         return $items;
+        
     }
 
     public function doRequest($method, $uri, $options = [], $ttl = 180, $tags = [])
