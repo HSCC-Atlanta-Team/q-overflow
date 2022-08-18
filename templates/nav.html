@@ -14,7 +14,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ @BASEURL }}/questions">Q&A</a>
         </li>
-
+        <li class="nav-item">
+          <a class="nav-link" href="{{ @BASEURL }}/mail">Mail</a>
+         </li>
         <check if="{{@currentUser->can(1)}}">
           <false>
             <li class="nav-item">
@@ -23,9 +25,7 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ @BASEURL }}/signup">Signup</a>
             </li>
-            <li class="nav-item">
-             <a class="nav-link" href="{{ @BASEURL }}/mail">Mail</a>
-            </li>
+
           </false>
         </check>
 
