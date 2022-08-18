@@ -2,6 +2,11 @@
 
 namespace Qoverflow\Controller;
 
+use Qoverflow\Model\Answer;
+use Qoverflow\Model\Comment;
+use Qoverflow\Model\Question;
+use Qoverflow\Repository\UserRepository;
+use SebastianBergmann\Template\Template;
 use Qoverflow\Repository\QuestionsRepository;
 
 class QuestionController
