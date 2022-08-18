@@ -64,8 +64,9 @@ class QClient extends Client
         }
 
 
-
+     
         return $items;
+        
     }
 
     public function doRequest($method, $uri, $options = [], $ttl = 180, $tags = [])

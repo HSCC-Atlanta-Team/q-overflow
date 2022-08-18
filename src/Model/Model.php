@@ -7,8 +7,13 @@ class Model
     protected $f3;
     protected $primaryKey;
 
-    public function __construct(array $data = [])
+    public function __construct(?array $data = [])
     {
+
+        if (is_null($data)) {
+            $data = [];
+        }
+
         $this->f3 = \Base::instance();
         foreach ($data as $property => $value) {
             // assemble the "set" method for this property
@@ -20,6 +25,14 @@ class Model
                 $this->$method($value);
             }
         }
+        $cache = $this->f3->cache;
+        if ($data['cache'] === true) {
+            $cacheKey = md5(get_class($this).$this->getId());
+            if (!$data = $cache->load($cacheKey)) {
+                $cache->save($item, $cacheKey, null, $this->f3->get('CACHE_TTL'));
+            }
+        }
+        
     }
 
     public function toArray(): array
