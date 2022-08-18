@@ -6,9 +6,14 @@
         <li class="nav-item pe-3">
           <a class="nav-link text-info fw-bold" href="{{ @BASEURL }}/questions">Q-Overflow</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ @BASEURL }}/dashboard">Dashboard</a>
-        </li>
+        <check if="{{  @currentUser->can(1) }}">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ @BASEURL }}/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ @BASEURL }}/questions/new">Ask Question</a>
+          </li>
+        </check>
         <li class="nav-item">
           <a class="nav-link" href="{{ @BASEURL }}/questions">Q&A</a>
         </li>
