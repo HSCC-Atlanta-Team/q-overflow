@@ -21,7 +21,8 @@
   <div class="card-body">
     <div class="question-body">{{ @question->getText() }}</div>
     <div class="question-answer-count">{{ @question->getAnswers() }} {{ @question->getComments() }}</div>
-    <!-- comments -->
+
+    
     <div class="comments-list">
       <repeat group="{{ @comments }}" value="{{ @comment }}">
         <include href="templates/comment.html" />
