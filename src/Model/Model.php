@@ -7,8 +7,13 @@ class Model
     protected $f3;
     protected $primaryKey;
 
-    public function __construct(array $data = [])
+    public function __construct(?array $data = [])
     {
+
+        if (is_null($data)) {
+            $data = [];
+        }
+
         $this->f3 = \Base::instance();
         foreach ($data as $property => $value) {
             // assemble the "set" method for this property
@@ -20,6 +25,7 @@ class Model
                 $this->$method($value);
             }
         }
+        
     }
 
     public function toArray(): array

@@ -57,7 +57,7 @@ class QClient extends Client
 
         $items = [];
         foreach ($data as $item) {
-            $model = new $class($item);
+            $model = new $class($data);
             $items[] = $model;
             $modelKey = $this->getModelName($class) . $model->getId();
             $cache->save($model->toArray(), $modelKey, [], 180);
