@@ -3,6 +3,7 @@
 namespace Qoverflow\Model;
 
 use Parsedown;
+use Qoverflow\Model\Model;
 
 class Question extends Model
 {
