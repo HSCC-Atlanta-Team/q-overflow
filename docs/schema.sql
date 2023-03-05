@@ -26,3 +26,16 @@ CREATE TABLE `question` (
 	`hasAcceptedAnswer` TINYINT(1) DEFAULT 0,
 	PRIMARY KEY (`question_id`)
 ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS `answer`;
+
+CREATE TABLE `answer` (
+	`answer_id` VARCHAR(64) NOT NULL,
+	`creator` VARCHAR(64) NOT NULL,
+	`createdAt` INT(11) NOT NULL,
+	`text` TEXT,
+	`upvotes` INT(11) DEFAULT '0',
+	`downvotes` INT(11) DEFAULT '0',
+	`accepted` TINYINT(1) DEFAULT '0',
+	PRIMARY KEY (`answer_id`)
+) ENGINE=InnoDB;
