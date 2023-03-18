@@ -50,3 +50,14 @@ CREATE TABLE `comment` (
 	`upvotes` INT(11) DEFAULT '0',
 	`downvotes` INT(11) DEFAULT '0'
 ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS `mail`;
+
+CREATE TABLE `mail` (
+	`mail_id` VARCHAR(64) NOT NULL,
+	`sender` VARCHAR(64) NOT NULL,
+	`reciever` VARCHAR(64) NOT NULL,
+	`createdAT` INT(11) NOT NULL,
+	`subject` TEXT,
+	`text` TEXT
+) ENGINE=InnoDB;
