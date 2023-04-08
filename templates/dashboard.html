@@ -1,1 +1,23 @@
 <h2>Dashboard</h2>
+<div id="current-user"></div>
+<div id="user-list"></div>
+
+
+<script>
+    var docReady = function () {
+        $('#current-user').load('/myself');
+
+        $.getJSON('/users', function (data) {
+            var list = $('<ul>');
+
+            data.forEach(user => {
+                var item = $(`<li>${user.username}</li>`);
+                list.append(item);
+            });
+
+            $('#user-list').append(list);
+        });
+    };
+
+    $(docReady);
+</script>
