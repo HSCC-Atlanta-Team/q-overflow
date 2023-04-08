@@ -1,16 +1,22 @@
 <h2>Dashboard</h2>
+<!-- Placeholders for dynamic content -->
 <div id="current-user"></div>
 <div id="user-list"></div>
 
 
 <script>
     var docReady = function () {
+        // This will load an HTML snippet from the /myself URL
         $('#current-user').load('/myself');
 
+        // This will load the JSON data from /users, and create a list from the data
         $.getJSON('/users', function (data) {
+            /** data is now an array of objects **/
             var list = $('<ul>');
 
+            // iterate through the array
             data.forEach(user => {
+                // the backticks inidcate that we will use TEMPLATE LITERALS - ${variable}
                 var item = $(`<li>${user.username}</li>`);
                 list.append(item);
             });
