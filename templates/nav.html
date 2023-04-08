@@ -6,49 +6,22 @@
         <li class="nav-item pe-3">
           <a class="nav-link text-info fw-bold" href="{{ @BASEURL }}/questions">Q-Overflow</a>
         </li>
-        <check if="{{  @currentUser->can(1) }}">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ @BASEURL }}/dashboard">Dashboard</a>
-          </li>
-        </check>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{ @BASEURL }}/dashboard">Dashboard</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ @BASEURL }}/questions">Q&A</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ @BASEURL }}/mail">Mail</a>
-         </li>
-        <check if="{{@currentUser->can(1)}}">
-          <false>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ @BASEURL }}/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ @BASEURL }}/signup">Signup</a>
-            </li>
-
-          </false>
-        </check>
-
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ @BASEURL }}/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ @BASEURL }}/signup">Signup</a>
+        </li>
       </ul>
-      <!--
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-        -->
-      <check if="{{@currentUser->can(1)}}">
-        <true>
-          <div class="float-right">
-            <a href="{{ @BASEURL }}"><img src="{{@currentUser->getGravatar(64)}}"></a>
-            <span id="user_points">Points: {{@currentUser->getPoints()}}</span>
-          </div>
-          <div>
-            <a href="{{ @BASEURL }}/logout">
-              <button type="button" class="btn btn-primary">Logout</button>
-            </a>
-          </div>
-        </true>
-      </check>
     </div>
   </div>
 </nav>
