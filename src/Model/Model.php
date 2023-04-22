@@ -14,7 +14,6 @@ class Model
             $data = [];
         }
 
-        $this->f3 = \Base::instance();
         foreach ($data as $property => $value) {
             // assemble the "set" method for this property
             $method = 'set'.str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
@@ -24,15 +23,7 @@ class Model
                 // call the method to set the value
                 $this->$method($value);
             }
-        }
-        $cache = $this->f3->cache;
-        if ($data['cache'] === true) {
-            $cacheKey = md5(get_class($this).$this->getId());
-            if (!$data = $cache->load($cacheKey)) {
-                $cache->save($item, $cacheKey, null, $this->f3->get('CACHE_TTL'));
-            }
-        }
-        
+        }       
     }
 
     public function toArray(): array
