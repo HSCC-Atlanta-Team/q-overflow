@@ -8,6 +8,9 @@ class BaseController
 {
     public function beforeroute($f3)
     {
+        if (!Auth::isAuthenticated()) {
+            $f3->reroute('/login');
+        }
     }
 
     public function afterroute($f3)

@@ -2,13 +2,13 @@
 
 namespace Qoverflow\Mock;
 
-use Qoverflow\Model\User as UserModel;
+use Qoverflow\Model\User;
 
-class User
+class UserMock
 {
-    public static function getUser(): UserModel
+    public static function getUser(): User
     {
-        return new UserModel([
+        return new User([
             "username" => "Willie0",
             "email" => "willie0@whs.edu",
             "salt" => "279cb885b2de6a469856927b6e22d6f5",
@@ -22,19 +22,19 @@ class User
     public static function getUsers(): array
     {
         return [
-            new UserModel([
+            new User([
                 'username' => 'test1',
             ]),
             
-            new UserModel([
+            new User([
                 'username' => 'test2',
             ]),
             
-            new UserModel([
+            new User([
                 'username' => 'test3',
             ]),
             
-            new UserModel([
+            new User([
                 'username' => 'test4',
             ]),
         ];

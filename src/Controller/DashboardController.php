@@ -9,8 +9,9 @@ class DashboardController extends BaseController
 {
     public function index ($f3)
     {
-        $username = 'Demo User';
-        $f3->set('username', $username);
+        // $f3->set('currentUser', UserMock::getUser());
+        // $f3->set('questions', QuestionMock::getQuestions());
+        // $f3->set('answers', AnswerMock::getAnswers());
 
         $f3->set('template', 'templates/dashboard.html');
     }
