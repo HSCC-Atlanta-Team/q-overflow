@@ -2,6 +2,8 @@
 
 namespace Qoverflow\Controller;
 
+use Qoverflow\Auth\Auth;
+
 class BaseController 
 {
     public function beforeroute($f3)
