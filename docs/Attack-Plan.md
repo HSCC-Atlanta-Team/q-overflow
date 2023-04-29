@@ -7,6 +7,7 @@
   - Fat Free Framework `bcosca/fatfree-core`
   - Guzzle `guzzlehttp/guzzle`
   - DD `symfony/var-dumper`
+  - Rate limiter `spatie/guzzle-rate-limiter-middleware`
   - [OPTIONAL] markdown `erusev/parsedown`
 - Set up some starting routes
 
@@ -31,6 +32,9 @@
 
 - application entry point (full team)
   - use internal API & dynamic loading
+
+- Set up our `client` class, and implement Rate limiter middleware stack
+  - Create Database (or Cache) `store` class
 
 - Repositories for all API endpoints (1 person)
   - Rate Limit
