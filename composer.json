@@ -8,6 +8,7 @@
         }
     },
     "require": {
+        "spatie/guzzle-rate-limiter-middleware": "^2.0",
         "bcosca/fatfree-core": "^3.8",
         "guzzlehttp/guzzle": "^7.4",
         "phpunit/phpunit": "^9.5",
