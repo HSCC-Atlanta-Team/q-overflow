@@ -17,7 +17,7 @@ class QuestionsRepository extends Repository
         try {
             $uri = 'questions/search';
             
-            $questions = $this->client->multiRequest('GET', $uri, Question::class, 'questions');
+            $questions = $this->client->request('GET', $uri);
 
             return $questions;
         } catch (\Exception $e) {
